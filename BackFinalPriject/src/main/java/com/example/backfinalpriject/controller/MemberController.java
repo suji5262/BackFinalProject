@@ -31,13 +31,13 @@ public class MemberController {
 
     @PostMapping("/admin/signup")
     public ResponseEntity<String> adminSignup(@RequestBody MemberSignupRequest request) {
-        String message = memberService.signup(request);
+        String message = memberService.adminSignup(request);
         return ResponseEntity.ok().body(message);
     }
 
     @PostMapping("/admin/login")
-    public ResponseEntity<String> adminlogin(@RequestBody MemberSignupRequest request) {
-        String message = memberService.signup(request);
-        return ResponseEntity.ok().body(message);
+    public ResponseEntity<MemberLoginResponse> adminLogin(@RequestBody MemberLoginRequest request) {
+        MemberLoginResponse response = memberService.adminLogin(request);
+        return ResponseEntity.ok().body(response);
     }
 }
