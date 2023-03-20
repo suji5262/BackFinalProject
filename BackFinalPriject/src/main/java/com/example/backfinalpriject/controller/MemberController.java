@@ -18,26 +18,26 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/login")
-    public ResponseEntity<MemberLoginResponse> login(@RequestBody MemberLoginRequest request) {
-        MemberLoginResponse response = memberService.login(request);
-        return ResponseEntity.ok().body(response);
+    public ResponseEntity<String> login(@RequestBody MemberLoginRequest request) {
+        memberService.login(request);
+        return ResponseEntity.ok().body("success");
     }
 
     @PostMapping("/signup")
     public ResponseEntity<String> signup(@RequestBody MemberSignupRequest request) {
-        String message = memberService.signup(request);
-        return ResponseEntity.ok().body(message);
+        memberService.signup(request);
+        return ResponseEntity.ok().body("success");
     }
 
     @PostMapping("/admin/signup")
     public ResponseEntity<String> adminSignup(@RequestBody MemberSignupRequest request) {
-        String message = memberService.adminSignup(request);
-        return ResponseEntity.ok().body(message);
+        memberService.adminSignup(request);
+        return ResponseEntity.ok().body("success");
     }
 
     @PostMapping("/admin/login")
-    public ResponseEntity<MemberLoginResponse> adminLogin(@RequestBody MemberLoginRequest request) {
-        MemberLoginResponse response = memberService.adminLogin(request);
-        return ResponseEntity.ok().body(response);
+    public ResponseEntity<String> adminLogin(@RequestBody MemberLoginRequest request) {
+        memberService.adminLogin(request);
+        return ResponseEntity.ok().body("success");
     }
 }

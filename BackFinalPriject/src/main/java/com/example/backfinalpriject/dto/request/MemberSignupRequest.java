@@ -8,5 +8,5 @@ public class MemberSignupRequest {
     private String email;
     private String password;
     private String name;
-    private int role; // 0은 회원, 1은 admin
+
 }
