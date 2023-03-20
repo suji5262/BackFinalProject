@@ -1,6 +1,6 @@
 package com.example.backfinalpriject.entity;
 
-import com.example.backfinalpriject.dto.request.CommentaryRequest;
+
 import lombok.*;
 
 import javax.persistence.*;
