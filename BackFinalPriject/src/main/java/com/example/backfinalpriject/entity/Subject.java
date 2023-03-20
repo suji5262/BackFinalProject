@@ -1,26 +1,26 @@
 package com.example.backfinalpriject.entity;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
-@Data
+@Getter
 @AllArgsConstructor
-@RequiredArgsConstructor
-@Table(name = "class")
-public class Class {
+@NoArgsConstructor
+@Table(name = "subject")
+public class Subject {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "class_id", nullable = false)
+    @Column(name = "subject_id")
     private Long id;
 
-    @Column(name = "class_name")
-    private String className;
+    @ManyToOne
+    @JoinColumn(name = "division_id")
+    private Division division;
 
     @Column(name = "subject_name")
     private String subjectName;

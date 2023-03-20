@@ -1,52 +1,47 @@
 package com.example.backfinalpriject.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import com.example.backfinalpriject.dto.request.CommentaryRequest;
+import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Data
-@AllArgsConstructor
+@Getter
 @RequiredArgsConstructor
 @Table(name = "commentary")
-public class Commentary {
+public class Commentary extends AuditingFields{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "commentary_id")
     private Long id;
 
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "class_id")
-    private Class classId;
+    @JoinColumn(name = "subject_id")
+    private Subject subject;
 
-    @Column(name = "created_date")
-    private LocalDateTime createdDate;
-
-    @Column(name = "instructor_name")
+    @Setter @Column(name = "instructor_name")
     private String instructorName;
 
-    @Column(name = "instructor_img")
+    @Setter @Column(name = "instructor_img")
     private String instructorImg;
 
-    @Column(name = "title")
+    @Setter @Column(name = "title")
     private String title;
 
-    @Column(name = "overall_video")
-    private String overallVideo;
+    @Setter @OneToMany(mappedBy = "commentary", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<CommentaryVideo> commentaryVideoList = new ArrayList<>();
 
-    @Column(name = "video1_link")
-    private String video1Link;
+    @Setter @OneToMany(mappedBy = "commentary", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<CommentaryFile> commentaryFileList = new ArrayList<>();
 
-    @Column(name = "video2_link")
-    private String video2Link;
-
-    @Column(name = "file_path")
-    private String filePath;
-
-    @Column(name = "commentary_view")
+    @Setter @Column(name = "views")
     private Long views;
+
+    @Setter @Column(name = "fileAttached")
+    private int fileAttached;
+
 }
