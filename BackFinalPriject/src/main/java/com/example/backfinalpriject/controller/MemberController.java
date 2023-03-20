@@ -17,16 +17,27 @@ public class MemberController {
 
     private final MemberService memberService;
 
-//    @PostMapping("/login")
-//    public ResponseEntity<MemberLoginResponse> login(@RequestBody MemberLoginRequest request){
-//        MemberLoginResponse response = memberService.login(request);
-//        return ResponseEntity.ok().body(response);
-//    }
-//
-//    @PostMapping("/signup")
-//    public ResponseEntity<String> signup(@RequestBody MemberSignupRequest request){
-//        String message = memberService.signup(request);
-//        return ResponseEntity.ok().body(message);
-//    }
+    @PostMapping("/login")
+    public ResponseEntity<MemberLoginResponse> login(@RequestBody MemberLoginRequest request) {
+        MemberLoginResponse response = memberService.login(request);
+        return ResponseEntity.ok().body(response);
+    }
 
+    @PostMapping("/signup")
+    public ResponseEntity<String> signup(@RequestBody MemberSignupRequest request) {
+        String message = memberService.signup(request);
+        return ResponseEntity.ok().body(message);
+    }
+
+    @PostMapping("/admin/signup")
+    public ResponseEntity<String> adminSignup(@RequestBody MemberSignupRequest request) {
+        String message = memberService.signup(request);
+        return ResponseEntity.ok().body(message);
+    }
+
+    @PostMapping("/admin/login")
+    public ResponseEntity<String> adminlogin(@RequestBody MemberSignupRequest request) {
+        String message = memberService.signup(request);
+        return ResponseEntity.ok().body(message);
+    }
 }

@@ -1,10 +1,7 @@
 package com.example.backfinalpriject.entity;
 
 import com.example.backfinalpriject.dto.request.MemberSignupRequest;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -29,14 +26,24 @@ public class Member {
     @Setter @Column(name = "member_name")
     private String name;
 
-    @Column(name = "role")
-    private int role = 0;
+    @Setter @Column(name = "role")
+    private int role;
 
-    public static Member of(MemberSignupRequest request, String encryptedPwd){
+    public static Member createUser(MemberSignupRequest request, String encryptedPwd){
         Member member = new Member();
         member.setEmail(request.getEmail());
         member.setPassword(encryptedPwd);
         member.setName(request.getName());
+        member.setRole(0);
+        return member;
+    }
+
+    public static Member createAdmin(MemberSignupRequest request, String encryptedPwd){
+        Member member = new Member();
+        member.setEmail(request.getEmail());
+        member.setPassword(encryptedPwd);
+        member.setName(request.getName());
+        member.setRole(1);
         return member;
     }
 }
