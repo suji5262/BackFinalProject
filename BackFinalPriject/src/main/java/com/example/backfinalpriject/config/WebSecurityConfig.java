@@ -46,10 +46,8 @@ public class WebSecurityConfig {
 
         configuration.setAllowedOriginPatterns(Collections.singletonList("*"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(List.of("authorization", "content-type", "x-auth-token"));
-        configuration.setExposedHeaders(Collections.singletonList("x-auth-token"));
+        configuration.setAllowedHeaders(List.of("authorization", "content-type"));
         configuration.setAllowCredentials(true);
-
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
