@@ -1,6 +1,6 @@
 package com.example.backfinalpriject.entity;
 
-import com.example.backfinalpriject.dto.request.FileRequest;
+
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
