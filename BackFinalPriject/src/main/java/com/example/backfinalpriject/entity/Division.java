@@ -19,6 +19,9 @@ public class Division {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name="division_name")
+    private String divisionName;
+
     @OneToMany(mappedBy = "division")
     private List<Subject> subjectList = new ArrayList<>();
 
