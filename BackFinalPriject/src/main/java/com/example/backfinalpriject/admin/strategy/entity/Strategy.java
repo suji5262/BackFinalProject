@@ -1,5 +1,8 @@
-package com.example.backfinalpriject.entity;
+package com.example.backfinalpriject.admin.strategy.entity;
 
+import com.example.backfinalpriject.entity.AuditingFields;
+import com.example.backfinalpriject.entity.Subject;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -8,9 +11,10 @@ import java.util.List;
 
 @Entity
 @Getter
+@Builder
 @RequiredArgsConstructor
 @Table(name = "strategy")
-public class Strategy extends AuditingFields{
+public class Strategy extends AuditingFields {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,6 +33,9 @@ public class Strategy extends AuditingFields{
 
     @Column(name = "strategy_views")
     private Long views;
+
+    @Column(name="image")
+    private String image;
 
     @Column(name = "content", columnDefinition = "TEXT")
     private String content;
