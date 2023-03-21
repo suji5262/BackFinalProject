@@ -2,9 +2,7 @@ package com.example.backfinalpriject.admin.strategy.entity;
 
 import com.example.backfinalpriject.entity.AuditingFields;
 import com.example.backfinalpriject.entity.Subject;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -12,7 +10,8 @@ import java.util.List;
 @Entity
 @Getter
 @Builder
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "strategy")
 public class Strategy extends AuditingFields {
 
