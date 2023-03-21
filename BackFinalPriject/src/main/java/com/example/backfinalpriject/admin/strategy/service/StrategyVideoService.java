@@ -1,4 +1,4 @@
 package com.example.backfinalpriject.admin.strategy.service;
 
-public interface StratehyService {
+public interface StrategyVideoService {
 }

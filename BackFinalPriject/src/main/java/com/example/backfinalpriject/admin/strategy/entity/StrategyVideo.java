@@ -20,7 +20,7 @@ public class StrategyVideo {
     @Column(name = "video_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = Strategy.class,fetch = FetchType.LAZY)
     @JoinColumn(name="strategy_id")
     private Strategy strategy;
 

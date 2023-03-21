@@ -1,10 +1,9 @@
 package com.example.backfinalpriject.controller;
 
-import com.example.backfinalpriject.dto.request.MemberLoginRequest;
-import com.example.backfinalpriject.dto.request.MemberSignupRequest;
+import com.example.backfinalpriject.controller.dto.request.MemberLoginRequest;
+import com.example.backfinalpriject.controller.dto.request.MemberSignupRequest;
 
 import com.example.backfinalpriject.service.MemberService;
-import com.example.backfinalpriject.service.impl.MemberServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class MemberController {
 
     private final MemberService memberService;
+
+
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody MemberLoginRequest request) {
@@ -38,6 +39,7 @@ public class MemberController {
     @PostMapping("/admin/login")
     public ResponseEntity<String> adminLogin(@RequestBody MemberLoginRequest request) {
         memberService.adminLogin(request);
+
         return ResponseEntity.ok().body("success");
     }
 }

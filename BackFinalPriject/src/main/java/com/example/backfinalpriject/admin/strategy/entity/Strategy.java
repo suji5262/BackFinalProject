@@ -1,11 +1,10 @@
 package com.example.backfinalpriject.admin.strategy.entity;
 
 import com.example.backfinalpriject.entity.AuditingFields;
-import com.example.backfinalpriject.entity.Subject;
+import com.example.backfinalpriject.distinction.repository.Subject;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Getter
@@ -39,7 +38,6 @@ public class Strategy extends AuditingFields {
     @Column(name = "content", columnDefinition = "TEXT")
     private String content;
 
-    @OneToMany(mappedBy = "strategy", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<StrategyVideo> videoLink;
+
 
 }
