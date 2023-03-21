@@ -1,4 +1,4 @@
-package com.example.backfinalpriject.entity;
+package com.example.backfinalpriject.distinction.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

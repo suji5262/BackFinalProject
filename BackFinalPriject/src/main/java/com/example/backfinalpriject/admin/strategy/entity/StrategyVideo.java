@@ -1,6 +1,7 @@
-package com.example.backfinalpriject.entity;
+package com.example.backfinalpriject.admin.strategy.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name="strategy_video")
+@Builder
 public class StrategyVideo {
 
     @Id
@@ -18,7 +20,7 @@ public class StrategyVideo {
     @Column(name = "video_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = Strategy.class,fetch = FetchType.LAZY)
     @JoinColumn(name="strategy_id")
     private Strategy strategy;
 

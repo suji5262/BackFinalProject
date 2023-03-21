@@ -1,16 +1,18 @@
-package com.example.backfinalpriject.entity;
+package com.example.backfinalpriject.admin.strategy.entity;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import com.example.backfinalpriject.entity.AuditingFields;
+import com.example.backfinalpriject.distinction.entity.Subject;
+import lombok.*;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Getter
-@RequiredArgsConstructor
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "strategy")
-public class Strategy extends AuditingFields{
+public class Strategy extends AuditingFields {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,10 +32,12 @@ public class Strategy extends AuditingFields{
     @Column(name = "strategy_views")
     private Long views;
 
+    @Column(name="image")
+    private String image;
+
     @Column(name = "content", columnDefinition = "TEXT")
     private String content;
 
-    @OneToMany(mappedBy = "strategy", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<StrategyVideo> videoLink;
+
 
 }

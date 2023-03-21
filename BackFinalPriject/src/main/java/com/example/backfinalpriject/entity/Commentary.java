@@ -1,6 +1,7 @@
 package com.example.backfinalpriject.entity;
 
 
+import com.example.backfinalpriject.distinction.entity.Subject;
 import lombok.*;
 
 import javax.persistence.*;
