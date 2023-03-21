@@ -32,12 +32,6 @@ public class WebSecurityConfig {
                 .and()
                 .csrf().disable()
                 .httpBasic().disable()
-                .formLogin().loginPage("/login").permitAll()
-                .and()
-                .logout()
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/login")
-                .and()
                 .build();
         //인증을 처리하는 기본필터 UsernamePasswordAuthenticationFilter 대신 별도의 인증 로직을 가진 필터를 생성하고 사용하고 싶을 때 아래와 같이 필터를 등록하고 사용
     }
