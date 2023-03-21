@@ -1,7 +1,7 @@
 package com.example.backfinalpriject.admin.strategy.entity;
 
 import com.example.backfinalpriject.entity.AuditingFields;
-import com.example.backfinalpriject.distinction.repository.Subject;
+import com.example.backfinalpriject.distinction.entity.Subject;
 import lombok.*;
 
 import javax.persistence.*;

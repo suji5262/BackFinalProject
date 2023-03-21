@@ -1,4 +1,4 @@
-package com.example.backfinalpriject.controller.dto.response;
+package com.example.backfinalpriject.dto.response;
 
 import com.example.backfinalpriject.entity.Member;
 import lombok.AllArgsConstructor;

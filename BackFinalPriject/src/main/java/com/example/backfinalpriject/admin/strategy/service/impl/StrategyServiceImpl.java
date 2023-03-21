@@ -4,7 +4,7 @@ import com.example.backfinalpriject.admin.strategy.dto.request.StrategyRequest;
 import com.example.backfinalpriject.admin.strategy.entity.Strategy;
 import com.example.backfinalpriject.admin.strategy.repository.StrategyRepository;
 import com.example.backfinalpriject.admin.strategy.service.StrategyService;
-import com.example.backfinalpriject.distinction.repository.Subject;
+import com.example.backfinalpriject.distinction.entity.Subject;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

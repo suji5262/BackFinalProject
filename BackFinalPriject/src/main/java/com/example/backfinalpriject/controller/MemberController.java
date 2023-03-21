@@ -1,7 +1,7 @@
 package com.example.backfinalpriject.controller;
 
-import com.example.backfinalpriject.controller.dto.request.MemberLoginRequest;
-import com.example.backfinalpriject.controller.dto.request.MemberSignupRequest;
+import com.example.backfinalpriject.dto.request.MemberLoginRequest;
+import com.example.backfinalpriject.dto.request.MemberSignupRequest;
 
 import com.example.backfinalpriject.service.MemberService;
 import lombok.RequiredArgsConstructor;

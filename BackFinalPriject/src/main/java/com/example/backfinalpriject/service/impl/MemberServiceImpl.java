@@ -1,9 +1,9 @@
 package com.example.backfinalpriject.service.impl;
 
-import com.example.backfinalpriject.controller.dto.request.MemberSignupRequest;
+import com.example.backfinalpriject.dto.request.MemberSignupRequest;
 import com.example.backfinalpriject.entity.Member;
 import com.example.backfinalpriject.repository.MemberRepository;
-import com.example.backfinalpriject.controller.dto.request.MemberLoginRequest;
+import com.example.backfinalpriject.dto.request.MemberLoginRequest;
 import com.example.backfinalpriject.exception.ErrorCode;
 import com.example.backfinalpriject.exception.GlobalException;
 import com.example.backfinalpriject.service.MemberService;

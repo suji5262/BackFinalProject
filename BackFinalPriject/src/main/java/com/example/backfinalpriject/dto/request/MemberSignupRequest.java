@@ -1,4 +1,4 @@
-package com.example.backfinalpriject.controller.dto.request;
+package com.example.backfinalpriject.dto.request;
 
 import lombok.Data;
 

@@ -2,7 +2,7 @@ package com.example.backfinalpriject.admin.strategy.dto.request;
 
 
 import com.example.backfinalpriject.admin.strategy.entity.Strategy;
-import com.example.backfinalpriject.distinction.repository.Subject;
+import com.example.backfinalpriject.distinction.entity.Subject;
 import lombok.*;
 
 @AllArgsConstructor
