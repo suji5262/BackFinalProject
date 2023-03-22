@@ -18,7 +18,7 @@ public class Subject {
     @Column(name = "subject_id")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "division_id")
     private Division division;
 
