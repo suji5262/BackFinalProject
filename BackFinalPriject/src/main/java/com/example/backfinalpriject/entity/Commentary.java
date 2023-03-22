@@ -43,6 +43,6 @@ public class Commentary extends AuditingFields{
     private Long views;
 
     @Setter @Column(name = "fileAttached")
-    private int fileAttached;
+    private Integer fileAttached;
 
 }
