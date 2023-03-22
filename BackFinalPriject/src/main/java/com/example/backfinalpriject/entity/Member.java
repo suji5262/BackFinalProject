@@ -27,7 +27,7 @@ public class Member {
     private String name;
 
     @Setter @Column(name = "role")
-    private int role;
+    private Integer role;
 
     public static Member createUser(MemberSignupRequest request, String encryptedPwd){
         Member member = new Member();
