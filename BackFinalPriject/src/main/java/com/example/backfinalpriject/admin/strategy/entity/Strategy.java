@@ -19,7 +19,7 @@ public class Strategy extends AuditingFields {
     @Column(name = "strategy_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "subject_id")
     private Subject subject;
 
@@ -37,7 +37,5 @@ public class Strategy extends AuditingFields {
 
     @Column(name = "content", columnDefinition = "TEXT")
     private String content;
-
-
 
 }
