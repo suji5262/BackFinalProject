@@ -7,11 +7,16 @@ import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.security.core.userdetails.User;
 
+import java.util.Optional;
+
 @Configuration
-public class AuditorConfig {
+public class AuditorConfig  {
 
     @Bean
     public AuditorAware<String> customAwareAudit() {
         return new CustomAwareAudit();
     }
+
+
+
 }

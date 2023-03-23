@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 public class StrategyResponse {
 
 
-    private String subject;
+    private String subjectName;
 
     private String lectureName;
 
@@ -28,11 +28,12 @@ public class StrategyResponse {
 
 
     public StrategyResponse(Strategy strategy){
-
+        this.subjectName = strategy.getSubject().getSubjectName();
         this.lectureName = strategy.getLectureName();
         this.instructorName = strategy.getInstructorName();
         this.image = strategy.getImage();
         this.content = strategy.getContent();
+        this.createDate = strategy.getCreatedDate();
 
     }
 

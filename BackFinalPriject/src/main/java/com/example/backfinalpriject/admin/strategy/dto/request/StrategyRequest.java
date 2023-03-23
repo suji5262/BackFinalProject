@@ -14,7 +14,7 @@ public class StrategyRequest {
 
 
 
-    private String subject;
+    private String subjectName;
 
     private String lectureName;
 
