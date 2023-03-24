@@ -10,4 +10,6 @@ import java.util.Optional;
 public interface SubjectRepository extends JpaRepository<Subject, Long> {
 
     List<Subject> findByDivision_DivisionName(String divisionName);
+
+    Optional<Subject> findBySubjectName(String subjectName);
 }

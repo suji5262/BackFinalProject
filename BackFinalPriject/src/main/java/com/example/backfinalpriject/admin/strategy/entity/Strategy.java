@@ -29,8 +29,6 @@ public class Strategy extends AuditingFields {
     @Column(name = "instructor_name")
     private String instructorName;
 
-    @Column(name = "strategy_views")
-    private Long views;
 
     @Column(name="image")
     private String image;
