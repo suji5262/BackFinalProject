@@ -1,6 +1,6 @@
 package com.example.backfinalpriject.entity;
 
-import com.example.backfinalpriject.dto.request.MemberSignupRequest;
+import com.example.backfinalpriject.member.dto.request.MemberSignupRequest;
 import lombok.*;
 
 import javax.persistence.*;

@@ -1,10 +1,5 @@
 package com.example.backfinalpriject.config;
 
-import com.example.backfinalpriject.entity.Member;
-import com.example.backfinalpriject.exception.ErrorCode;
-import com.example.backfinalpriject.exception.GlobalException;
-import com.example.backfinalpriject.repository.MemberRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.core.Authentication;
 

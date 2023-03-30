@@ -1,7 +1,8 @@
-package com.example.backfinalpriject.entity;
+package com.example.backfinalpriject.admin.commentary.entity;
 
 
 import com.example.backfinalpriject.distinction.entity.Subject;
+import com.example.backfinalpriject.entity.AuditingFields;
 import lombok.*;
 
 import javax.persistence.*;
@@ -12,7 +13,7 @@ import java.util.List;
 @Getter
 @RequiredArgsConstructor
 @Table(name = "commentary")
-public class Commentary extends AuditingFields{
+public class Commentary extends AuditingFields {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

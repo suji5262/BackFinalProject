@@ -1,9 +1,9 @@
 package com.example.backfinalpriject.controller;
 
-import com.example.backfinalpriject.dto.request.MemberLoginRequest;
-import com.example.backfinalpriject.dto.request.MemberSignupRequest;
+import com.example.backfinalpriject.member.dto.request.MemberLoginRequest;
+import com.example.backfinalpriject.member.dto.request.MemberSignupRequest;
 
-import com.example.backfinalpriject.service.MemberService;
+import com.example.backfinalpriject.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

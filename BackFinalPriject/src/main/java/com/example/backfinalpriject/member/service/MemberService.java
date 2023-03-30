@@ -1,7 +1,7 @@
-package com.example.backfinalpriject.service;
+package com.example.backfinalpriject.member.service;
 
-import com.example.backfinalpriject.dto.request.MemberLoginRequest;
-import com.example.backfinalpriject.dto.request.MemberSignupRequest;
+import com.example.backfinalpriject.member.dto.request.MemberLoginRequest;
+import com.example.backfinalpriject.member.dto.request.MemberSignupRequest;
 
 public interface MemberService {
     void login(MemberLoginRequest request);

@@ -1,10 +1,9 @@
-package com.example.backfinalpriject.entity;
+package com.example.backfinalpriject.admin.commentary.entity;
 
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 
