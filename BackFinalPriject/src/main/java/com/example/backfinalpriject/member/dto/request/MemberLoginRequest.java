@@ -1,4 +1,4 @@
-package com.example.backfinalpriject.dto.request;
+package com.example.backfinalpriject.member.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

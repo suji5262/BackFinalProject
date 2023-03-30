@@ -1,12 +1,12 @@
-package com.example.backfinalpriject.service.impl;
+package com.example.backfinalpriject.member.service.impl;
 
-import com.example.backfinalpriject.dto.request.MemberSignupRequest;
+import com.example.backfinalpriject.member.dto.request.MemberSignupRequest;
 import com.example.backfinalpriject.entity.Member;
-import com.example.backfinalpriject.repository.MemberRepository;
-import com.example.backfinalpriject.dto.request.MemberLoginRequest;
+import com.example.backfinalpriject.member.service.MemberService;
+import com.example.backfinalpriject.member.repository.MemberRepository;
+import com.example.backfinalpriject.member.dto.request.MemberLoginRequest;
 import com.example.backfinalpriject.exception.ErrorCode;
 import com.example.backfinalpriject.exception.GlobalException;
-import com.example.backfinalpriject.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

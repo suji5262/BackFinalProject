@@ -1,4 +1,4 @@
-package com.example.backfinalpriject.repository;
+package com.example.backfinalpriject.member.repository;
 
 import com.example.backfinalpriject.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
