@@ -5,6 +5,8 @@ import com.example.backfinalpriject.distinction.entity.Subject;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -35,5 +37,8 @@ public class Strategy extends AuditingFields {
 
     @Column(name = "content", columnDefinition = "TEXT")
     private String content;
+
+    @OneToMany(mappedBy = "strategy", cascade = CascadeType.ALL)
+    private List<StrategyVideo> strategyVideos = new ArrayList<>();
 
 }
