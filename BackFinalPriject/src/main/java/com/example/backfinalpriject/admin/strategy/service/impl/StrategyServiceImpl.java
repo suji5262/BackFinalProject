@@ -1,6 +1,8 @@
 package com.example.backfinalpriject.admin.strategy.service.impl;
 
 import com.example.backfinalpriject.admin.strategy.dto.request.StrategyRequest;
+import com.example.backfinalpriject.admin.strategy.dto.response.StrategyDetailPageResponse;
+import com.example.backfinalpriject.admin.strategy.dto.response.StrategyPageResponse;
 import com.example.backfinalpriject.admin.strategy.entity.Strategy;
 import com.example.backfinalpriject.admin.strategy.repository.StrategyRepository;
 import com.example.backfinalpriject.admin.strategy.service.StrategyService;
@@ -17,7 +19,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -69,5 +74,33 @@ public class StrategyServiceImpl implements StrategyService {
         file.transferTo(new File(fullPath));
 
         return fullPath;
+    }
+
+
+    /**
+     * 전체조회
+     */
+    @Transactional(readOnly = true)
+    @Override
+    public List<StrategyPageResponse> getStrategyPageList() {
+        return strategyRepository.findFetchSubjectAll().stream()
+                .map(StrategyPageResponse::new)
+                .collect(Collectors.toList());
+    }
+
+
+    /**
+     * 상세조회
+     */
+    @Transactional(readOnly = true)
+    @Override
+    public StrategyDetailPageResponse selectDetailStrategy(Long id) {
+        Optional<Strategy> strategyItem = strategyRepository.findById(id);
+        if(strategyItem.isPresent()){
+            StrategyDetailPageResponse response = new StrategyDetailPageResponse(strategyItem.get());
+            return response;
+        }else{
+            return null;
+        }
     }
 }
