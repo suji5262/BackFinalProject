@@ -44,7 +44,9 @@ public class StrategyServiceImpl implements StrategyService {
             String image = uploadPic(file);
             strategyRequest.setImage(image);
 
-            Subject subject = subjectRepository.findBySubjectName(strategyRequest.getSubjectName()).get();
+            Subject subject = subjectRepository.findBySubjectName(strategyRequest.getSubjectName()).orElse(null);
+            System.out.println("아이디="+subject.getId());
+            System.out.println("과목="+subject.getSubjectName());
 
 
             strategyRepository.save(strategyRequest.toEntity(subject));

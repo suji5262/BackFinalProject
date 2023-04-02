@@ -19,6 +19,8 @@ public class StrategyController {
 
     private final StrategyService strategyService;
 
+
+
     @PostMapping("/admin/strategy")
     public String strategyBoard(@RequestParam("file") MultipartFile file, StrategyRequest strategyRequest){
         return strategyService.strategyBoard(file,strategyRequest);
