@@ -3,6 +3,7 @@ package com.example.backfinalpriject.admin.strategy.service.impl;
 import com.example.backfinalpriject.admin.strategy.dto.request.StrategyRequest;
 import com.example.backfinalpriject.admin.strategy.dto.response.StrategyDetailPageResponse;
 import com.example.backfinalpriject.admin.strategy.dto.response.StrategyPageResponse;
+import com.example.backfinalpriject.admin.strategy.dto.response.StrategySearchResponse;
 import com.example.backfinalpriject.admin.strategy.entity.Strategy;
 import com.example.backfinalpriject.admin.strategy.repository.StrategyRepository;
 import com.example.backfinalpriject.admin.strategy.service.StrategyService;
@@ -105,4 +106,29 @@ public class StrategyServiceImpl implements StrategyService {
             return null;
         }
     }
+
+
+    /**
+     * 과목 검색
+     */
+
+    @Override
+    public List<StrategySearchResponse> selectSubjectName(String subject) {
+        return strategyRepository.findBySubject_SubjectName(subject).stream()
+                .map(subjectName -> new StrategySearchResponse(subjectName))
+                .collect(Collectors.toList());
+    }
+
+
+    /**
+     * 교수 검색
+     */
+    @Override
+    public List<StrategySearchResponse> selectInstructorName(String instructorName) {
+        return strategyRepository.findByInstructorName(instructorName).stream()
+                .map(instructor -> new StrategySearchResponse(instructor))
+                .collect(Collectors.toList());
+    }
+
+
 }

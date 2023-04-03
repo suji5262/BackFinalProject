@@ -14,4 +14,10 @@ public interface StrategyRepository extends JpaRepository<Strategy, Long> {
 
     @Query("select s from Strategy s join fetch s.subject ss join fetch ss.division")
     List<Strategy> findFetchSubjectAll(); // 전체조회
+
+
+    List<Strategy> findBySubject_SubjectName(String subject); // 과목검색
+
+    List<Strategy> findByInstructorName(String instructorName);
 }
+
