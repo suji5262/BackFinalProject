@@ -1,10 +1,12 @@
 package com.example.backfinalpriject.admin.strategy.service.impl;
 
 import com.example.backfinalpriject.admin.strategy.dto.request.StrategyRequest;
+import com.example.backfinalpriject.admin.strategy.dto.request.StrategyVideoRequest;
 import com.example.backfinalpriject.admin.strategy.dto.response.StrategyDetailPageResponse;
 import com.example.backfinalpriject.admin.strategy.dto.response.StrategyPageResponse;
 import com.example.backfinalpriject.admin.strategy.entity.Strategy;
 import com.example.backfinalpriject.admin.strategy.repository.StrategyRepository;
+import com.example.backfinalpriject.admin.strategy.repository.StrategyVideoRepository;
 import com.example.backfinalpriject.admin.strategy.service.StrategyService;
 import com.example.backfinalpriject.distinction.entity.Subject;
 import com.example.backfinalpriject.distinction.repository.SubjectRepository;
@@ -30,7 +32,7 @@ import java.util.stream.Collectors;
 public class StrategyServiceImpl implements StrategyService {
 
     private final StrategyRepository strategyRepository;
-
+    private final StrategyVideoRepository strategyVideoRepository;
     private final SubjectRepository subjectRepository;
 
 
@@ -38,7 +40,7 @@ public class StrategyServiceImpl implements StrategyService {
     private String uploadDir;
 
     @Override
-    public String strategyBoard(MultipartFile file,StrategyRequest strategyRequest) {
+    public String strategyBoard(MultipartFile file, StrategyRequest strategyRequest, StrategyVideoRequest videoRequest) {
 
         try{
             String image = uploadPic(file);
@@ -46,8 +48,10 @@ public class StrategyServiceImpl implements StrategyService {
 
             Subject subject = subjectRepository.findBySubjectName(strategyRequest.getSubjectName()).get();
 
-
             strategyRepository.save(strategyRequest.toEntity(subject));
+
+            Strategy strategy = strategyRepository.findById(videoRequest.getStrategyId()).get();
+            strategyVideoRepository.save(videoRequest.toEntity(strategy));
 
         }catch (Exception e){
             e.printStackTrace();

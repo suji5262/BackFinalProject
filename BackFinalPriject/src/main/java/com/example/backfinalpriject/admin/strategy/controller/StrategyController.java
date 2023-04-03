@@ -1,6 +1,7 @@
 package com.example.backfinalpriject.admin.strategy.controller;
 
 import com.example.backfinalpriject.admin.strategy.dto.request.StrategyRequest;
+import com.example.backfinalpriject.admin.strategy.dto.request.StrategyVideoRequest;
 import com.example.backfinalpriject.admin.strategy.dto.response.StrategyDetailPageResponse;
 import com.example.backfinalpriject.admin.strategy.dto.response.StrategyPageResponse;
 import com.example.backfinalpriject.admin.strategy.service.StrategyService;
@@ -20,8 +21,8 @@ public class StrategyController {
     private final StrategyService strategyService;
 
     @PostMapping("/admin/strategy")
-    public String strategyBoard(@RequestParam("file") MultipartFile file, StrategyRequest strategyRequest){
-        return strategyService.strategyBoard(file,strategyRequest);
+    public String strategyBoard(@RequestParam("file") MultipartFile file, StrategyRequest strategyRequest, StrategyVideoRequest videoRequest){
+        return strategyService.strategyBoard(file,strategyRequest,videoRequest);
     }
 
     @GetMapping("/strategy") // 페이지 전체조회
