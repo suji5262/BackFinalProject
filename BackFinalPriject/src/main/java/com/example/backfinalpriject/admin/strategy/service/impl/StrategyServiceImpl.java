@@ -64,20 +64,13 @@ public class StrategyServiceImpl implements StrategyService {
             String image = uploadPic(file);
             strategyRequest.setImage(image);
 
-<<<<<<< HEAD
-            Subject subject = subjectRepository.findBySubjectName(strategyRequest.getSubjectName()).orElse(null);
-            System.out.println("아이디="+subject.getId());
-            System.out.println("과목="+subject.getSubjectName());
-=======
             String video1= uploadPic(video);
             videoRequest.setVideoLink(video1);
             
             Subject subject = subjectRepository.findBySubjectName(strategyRequest.getSubjectName()).get();
->>>>>>> feature/insert
 
             Strategy strategy = strategyRequest.toEntity(subject);
-
-
+            
             StrategyVideo strategyVideo = videoRequest.toEntity(strategy);
            // strategyVideo.addStrategy(strategy);
             // strategy.addStrategyVideo(strategyVideo);
