@@ -1,11 +1,14 @@
 package com.example.backfinalpriject.admin.strategy.service.impl;
 
 import com.example.backfinalpriject.admin.strategy.dto.request.StrategyRequest;
+import com.example.backfinalpriject.admin.strategy.dto.request.StrategyVideoRequest;
 import com.example.backfinalpriject.admin.strategy.dto.response.StrategyDetailPageResponse;
 import com.example.backfinalpriject.admin.strategy.dto.response.StrategyPageResponse;
 import com.example.backfinalpriject.admin.strategy.dto.response.StrategySearchResponse;
 import com.example.backfinalpriject.admin.strategy.entity.Strategy;
+import com.example.backfinalpriject.admin.strategy.entity.StrategyVideo;
 import com.example.backfinalpriject.admin.strategy.repository.StrategyRepository;
+import com.example.backfinalpriject.admin.strategy.repository.StrategyVideoRepository;
 import com.example.backfinalpriject.admin.strategy.service.StrategyService;
 import com.example.backfinalpriject.distinction.entity.Subject;
 import com.example.backfinalpriject.distinction.repository.SubjectRepository;
@@ -31,7 +34,7 @@ import java.util.stream.Collectors;
 public class StrategyServiceImpl implements StrategyService {
 
     private final StrategyRepository strategyRepository;
-
+    private final StrategyVideoRepository strategyVideoRepository;
     private final SubjectRepository subjectRepository;
 
 
@@ -39,18 +42,49 @@ public class StrategyServiceImpl implements StrategyService {
     private String uploadDir;
 
     @Override
-    public String strategyBoard(MultipartFile file,StrategyRequest strategyRequest) {
+    public String strategyBoard(MultipartFile file,MultipartFile video, StrategyRequest strategyRequest, StrategyVideoRequest videoRequest) {
 
         try{
+            /*
+            [ mentor's sudo code ]
+
+            // strategy 1:N video
+            Strategy strategy = new Strategy();
+            // strategy.setFields();
+
+            StrategyVideo strategyVideo = new StrategyVideo();
+            // strategyVideo.setFields();
+
+            // addStrategyVideo();
+            strategyVideo.setStrategy(strategy);
+            strategy.setStrategyVideo(strategyVideo);
+
+            strategyRepository.save(strategy);
+            */
             String image = uploadPic(file);
             strategyRequest.setImage(image);
 
+<<<<<<< HEAD
             Subject subject = subjectRepository.findBySubjectName(strategyRequest.getSubjectName()).orElse(null);
             System.out.println("아이디="+subject.getId());
             System.out.println("과목="+subject.getSubjectName());
+=======
+            String video1= uploadPic(video);
+            videoRequest.setVideoLink(video1);
+            
+            Subject subject = subjectRepository.findBySubjectName(strategyRequest.getSubjectName()).get();
+>>>>>>> feature/insert
+
+            Strategy strategy = strategyRequest.toEntity(subject);
 
 
-            strategyRepository.save(strategyRequest.toEntity(subject));
+            StrategyVideo strategyVideo = videoRequest.toEntity(strategy);
+           // strategyVideo.addStrategy(strategy);
+            // strategy.addStrategyVideo(strategyVideo);
+
+            strategyRepository.save(strategy);
+            strategyVideoRepository.save(strategyVideo);
+
 
         }catch (Exception e){
             e.printStackTrace();
