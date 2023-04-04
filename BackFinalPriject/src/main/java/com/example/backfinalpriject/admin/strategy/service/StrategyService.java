@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface StrategyService {
 
-    String strategyBoard(MultipartFile file, StrategyRequest strategyRequest, StrategyVideoRequest videoRequest);
+    String strategyBoard(MultipartFile file,MultipartFile video, StrategyRequest strategyRequest, StrategyVideoRequest videoRequest);
 
     List<StrategyPageResponse> getStrategyPageList(); // 전체조회
 

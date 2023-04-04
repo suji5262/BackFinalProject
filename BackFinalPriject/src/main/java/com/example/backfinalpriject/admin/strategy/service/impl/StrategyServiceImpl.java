@@ -5,6 +5,7 @@ import com.example.backfinalpriject.admin.strategy.dto.request.StrategyVideoRequ
 import com.example.backfinalpriject.admin.strategy.dto.response.StrategyDetailPageResponse;
 import com.example.backfinalpriject.admin.strategy.dto.response.StrategyPageResponse;
 import com.example.backfinalpriject.admin.strategy.entity.Strategy;
+import com.example.backfinalpriject.admin.strategy.entity.StrategyVideo;
 import com.example.backfinalpriject.admin.strategy.repository.StrategyRepository;
 import com.example.backfinalpriject.admin.strategy.repository.StrategyVideoRepository;
 import com.example.backfinalpriject.admin.strategy.service.StrategyService;
@@ -40,18 +41,43 @@ public class StrategyServiceImpl implements StrategyService {
     private String uploadDir;
 
     @Override
-    public String strategyBoard(MultipartFile file, StrategyRequest strategyRequest, StrategyVideoRequest videoRequest) {
+    public String strategyBoard(MultipartFile file,MultipartFile video, StrategyRequest strategyRequest, StrategyVideoRequest videoRequest) {
 
         try{
+            /*
+            [ mentor's sudo code ]
+
+            // strategy 1:N video
+            Strategy strategy = new Strategy();
+            // strategy.setFields();
+
+            StrategyVideo strategyVideo = new StrategyVideo();
+            // strategyVideo.setFields();
+
+            // addStrategyVideo();
+            strategyVideo.setStrategy(strategy);
+            strategy.setStrategyVideo(strategyVideo);
+
+            strategyRepository.save(strategy);
+            */
             String image = uploadPic(file);
             strategyRequest.setImage(image);
 
+            String video1= uploadPic(video);
+            videoRequest.setVideoLink(video1);
+            
             Subject subject = subjectRepository.findBySubjectName(strategyRequest.getSubjectName()).get();
 
-            strategyRepository.save(strategyRequest.toEntity(subject));
+            Strategy strategy = strategyRequest.toEntity(subject);
 
-            Strategy strategy = strategyRepository.findById(videoRequest.getStrategyId()).get();
-            strategyVideoRepository.save(videoRequest.toEntity(strategy));
+
+            StrategyVideo strategyVideo = videoRequest.toEntity(strategy);
+           // strategyVideo.addStrategy(strategy);
+            // strategy.addStrategyVideo(strategyVideo);
+
+            strategyRepository.save(strategy);
+            strategyVideoRepository.save(strategyVideo);
+
 
         }catch (Exception e){
             e.printStackTrace();

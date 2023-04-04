@@ -1,14 +1,12 @@
 package com.example.backfinalpriject.admin.strategy.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name="strategy_video")
@@ -26,4 +24,10 @@ public class StrategyVideo {
 
     @Column(name="video_link")
     private String videoLink;
+
+    public void  addStrategy(Strategy strategy){
+        this.strategy = strategy;
+        strategy.getStrategyVideos().add(this);
+       // strategy.getStrategyVideos().add(this);
+    }
 }

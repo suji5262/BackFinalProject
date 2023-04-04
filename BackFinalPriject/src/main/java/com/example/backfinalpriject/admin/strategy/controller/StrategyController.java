@@ -21,8 +21,8 @@ public class StrategyController {
     private final StrategyService strategyService;
 
     @PostMapping("/admin/strategy")
-    public String strategyBoard(@RequestParam("file") MultipartFile file, StrategyRequest strategyRequest, StrategyVideoRequest videoRequest){
-        return strategyService.strategyBoard(file,strategyRequest,videoRequest);
+    public String strategyBoard(@RequestParam("file") MultipartFile file,@RequestParam("video") MultipartFile video, StrategyRequest strategyRequest, StrategyVideoRequest videoRequest){
+        return strategyService.strategyBoard(file,video,strategyRequest,videoRequest);
     }
 
     @GetMapping("/strategy") // 페이지 전체조회
