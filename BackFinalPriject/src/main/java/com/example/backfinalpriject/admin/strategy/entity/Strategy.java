@@ -11,6 +11,7 @@ import java.util.List;
 @Entity
 @Getter
 @Builder
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "strategy")
@@ -40,5 +41,24 @@ public class Strategy extends AuditingFields {
 
     @OneToMany(mappedBy = "strategy", cascade = CascadeType.ALL)
     private List<StrategyVideo> strategyVideos = new ArrayList<>();
+
+
+    public void addStrategyVideo(StrategyVideo strategyVideo){
+        if(strategyVideo.getStrategy() != null){
+            strategyVideo.getStrategy().getStrategyVideos().remove(strategyVideo);
+        }
+
+
+        strategyVideo.setStrategy(this);
+        this.strategyVideos.add(strategyVideo);
+
+
+//        strategyVideos.add(strategyVideos);
+//        if(strategyVideo.getStrategy()!= this){
+//            strategyVideo.setStrategy(this);
+//        }
+////        System.out.println("video3="+ strategyVideos.add(strategyVideo));
+//        strategyVideo.setStrategy(strategyVideo.getStrategy());
+    }
 
 }

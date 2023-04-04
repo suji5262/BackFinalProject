@@ -25,5 +25,10 @@ public class StrategyVideoRequest {
 
     }
 
+    public StrategyVideoRequest (StrategyVideo strategyVideo){
+        this.strategyId  = strategyVideo.getStrategy().getId();
+        this.videoLink = strategyVideo.getVideoLink();
+    }
+
 
 }
