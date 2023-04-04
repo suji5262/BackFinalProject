@@ -16,6 +16,7 @@ import java.util.List;
 public class StrategyRequest {
 
 
+    //private Long strategyId;
 
     private String subjectName;
 

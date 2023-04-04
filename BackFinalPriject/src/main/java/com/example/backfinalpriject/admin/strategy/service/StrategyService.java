@@ -20,4 +20,6 @@ public interface StrategyService {
     List<StrategySearchResponse> selectSubjectName(String subject);
 
     List<StrategySearchResponse> selectInstructorName(String instructorName);
+
+    String updateStrategy(Long strategyID,MultipartFile file,MultipartFile video, StrategyRequest strategyRequest, StrategyVideoRequest videoRequest);
 }
