@@ -31,6 +31,11 @@ public class StrategyController {
         return strategyService.updateStrategy(strategyId,file,video,strategyRequest,videoRequest);
     }
 
+    @DeleteMapping("/admin/strategy/{strategyId}")
+    public String deleteStrategy(  Long strategyId){
+        return strategyService.deleteStrategy(strategyId);
+    }
+
     @GetMapping("/strategy") // 페이지 전체조회
     ResponseEntity<List<StrategyPageResponse>> getStrategyPageList() {
         List<StrategyPageResponse> StrategyPageList = strategyService.getStrategyPageList();
