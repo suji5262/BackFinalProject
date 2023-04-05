@@ -22,4 +22,8 @@ public interface StrategyService {
     List<StrategySearchResponse> selectInstructorName(String instructorName);
 
     String updateStrategy(Long strategyID,MultipartFile file,MultipartFile video, StrategyRequest strategyRequest, StrategyVideoRequest videoRequest);
+
+    String deleteStrategy(Long strategyId);
+
+
 }

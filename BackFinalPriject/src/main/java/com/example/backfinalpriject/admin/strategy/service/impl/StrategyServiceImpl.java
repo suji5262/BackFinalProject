@@ -99,7 +99,7 @@ public class StrategyServiceImpl implements StrategyService {
             videoRequest.setVideoLink(video1);
 
             Strategy strategy = strategyRepository.findById(strategyId).get();
-            System.out.println("strateyId=" + strategy.getId());
+
             Subject subject = subjectRepository.findBySubjectName(strategyRequest.getSubjectName()).get();
             strategy.updateStrategy(subject,strategyRequest.getLectureName(),strategyRequest.getInstructorName(),
                     strategyRequest.getImage(),strategyRequest.getContent());
@@ -115,6 +115,26 @@ public class StrategyServiceImpl implements StrategyService {
 
         return "success";
     }
+
+    @Override
+    public String deleteStrategy(Long strategyId) {
+        try{
+            Strategy strategy = strategyRepository.findById(strategyId).get();
+
+            StrategyVideo strategyVideo = strategyVideoRepository.findByStrategy_id(strategy.getId()).get();
+
+            strategyVideoRepository.deleteByStrategy_id(strategyVideo.getId());
+            strategyRepository.deleteById(strategy.getId());
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return "failed";
+        }
+
+        return "success";
+    }
+
+
 
 
     /*

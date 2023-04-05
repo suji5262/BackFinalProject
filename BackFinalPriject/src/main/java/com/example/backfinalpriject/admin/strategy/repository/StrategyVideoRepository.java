@@ -8,4 +8,6 @@ import java.util.Optional;
 public interface StrategyVideoRepository extends JpaRepository<StrategyVideo, Long> {
 
     Optional<StrategyVideo> findByStrategy_id(Long Id);
+
+    Optional<StrategyVideo> deleteByStrategy_id(Long Id);
 }
