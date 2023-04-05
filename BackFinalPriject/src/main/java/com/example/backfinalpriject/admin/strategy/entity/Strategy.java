@@ -42,6 +42,14 @@ public class Strategy extends AuditingFields {
     @OneToMany(mappedBy = "strategy", cascade = CascadeType.ALL)
     private List<StrategyVideo> strategyVideos = new ArrayList<>();
 
+    public void updateStrategy(Subject subject,String lectureName,String instructorName,String image,String content){
+        this.subject = subject;
+        this.lectureName = lectureName;
+        this.instructorName = instructorName;
+        this.image = image;
+        this.content = content;
+    }
+
 
     public void addStrategyVideo(StrategyVideo strategyVideo){
         if(strategyVideo.getStrategy() != null){

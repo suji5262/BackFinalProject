@@ -25,6 +25,10 @@ public class StrategyVideo {
     @Column(name="video_link")
     private String videoLink;
 
+    public void updateVideo(String videoLink){
+        this.videoLink = videoLink;
+    }
+
     public void  addStrategy(Strategy strategy){
         this.strategy = strategy;
         strategy.getStrategyVideos().add(this);

@@ -26,6 +26,11 @@ public class StrategyController {
         return strategyService.strategyBoard(file,video,strategyRequest,videoRequest);
     }
 
+    @PatchMapping("/admin/strategy/{strategyId}")
+    public String updateStrategy(Long strategyId,@RequestParam("file") MultipartFile file, @RequestParam("video") MultipartFile video, StrategyRequest strategyRequest, StrategyVideoRequest videoRequest){
+        return strategyService.updateStrategy(strategyId,file,video,strategyRequest,videoRequest);
+    }
+
     @GetMapping("/strategy") // 페이지 전체조회
     ResponseEntity<List<StrategyPageResponse>> getStrategyPageList() {
         List<StrategyPageResponse> StrategyPageList = strategyService.getStrategyPageList();

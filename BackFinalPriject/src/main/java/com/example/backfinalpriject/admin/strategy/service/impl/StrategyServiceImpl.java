@@ -70,7 +70,7 @@ public class StrategyServiceImpl implements StrategyService {
             Subject subject = subjectRepository.findBySubjectName(strategyRequest.getSubjectName()).get();
 
             Strategy strategy = strategyRequest.toEntity(subject);
-            
+
             StrategyVideo strategyVideo = videoRequest.toEntity(strategy);
            // strategyVideo.addStrategy(strategy);
             // strategy.addStrategyVideo(strategyVideo);
@@ -89,9 +89,38 @@ public class StrategyServiceImpl implements StrategyService {
 
 
 
+    @Override
+    public String updateStrategy(Long strategyId,MultipartFile file, MultipartFile video, StrategyRequest strategyRequest, StrategyVideoRequest videoRequest) {
+        try{
+            String image = uploadPic(file);
+            strategyRequest.setImage(image);
+
+            String video1= uploadPic(video);
+            videoRequest.setVideoLink(video1);
+
+            Strategy strategy = strategyRepository.findById(strategyId).get();
+            System.out.println("strateyId=" + strategy.getId());
+            Subject subject = subjectRepository.findBySubjectName(strategyRequest.getSubjectName()).get();
+            strategy.updateStrategy(subject,strategyRequest.getLectureName(),strategyRequest.getInstructorName(),
+                    strategyRequest.getImage(),strategyRequest.getContent());
+            StrategyVideo strategyVideo = strategyVideoRepository.findByStrategy_id(strategy.getId()).get();
+
+            strategyVideo.updateVideo(videoRequest.getVideoLink());
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return "failed";
+        }
+
+        return "success";
+    }
+
+
     /*
     파일 업로드 관련 메서드
      */
+
     public String uploadPic(MultipartFile file) throws IOException {
         Path uploadPath = Paths.get(uploadDir);
         if (!Files.isDirectory(uploadPath)) {
