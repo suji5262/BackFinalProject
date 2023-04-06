@@ -1,6 +1,6 @@
 package com.example.backfinalpriject.admin.commentary.entity;
 
-import com.example.backfinalpriject.admin.commentary.dto.VideoUrlRequest;
+import com.example.backfinalpriject.admin.commentary.dto.request.VideoUrlRequest;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

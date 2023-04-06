@@ -42,8 +42,8 @@ public class StrategyController {
         return ResponseEntity.ok().body(StrategyPageList);
     }
 
-    @GetMapping("/strategy/detail/{id}") // 페이지 상세조회
-    public ResponseEntity<StrategyDetailPageResponse> selectDetailStrategy(@PathVariable Long id){
+    @GetMapping("/strategy/detail") // 페이지 상세조회
+    public ResponseEntity<StrategyDetailPageResponse> selectDetailStrategy(@RequestParam Long id){
         StrategyDetailPageResponse response = strategyService.selectDetailStrategy(id);
         return ResponseEntity.ok().body(response);
     }

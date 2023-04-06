@@ -1,6 +1,6 @@
 package com.example.backfinalpriject.admin.commentary.entity;
 
-import com.example.backfinalpriject.admin.commentary.dto.CommentaryRequest;
+import com.example.backfinalpriject.admin.commentary.dto.request.CommentaryRequest;
 import com.example.backfinalpriject.distinction.entity.Subject;
 import com.example.backfinalpriject.entity.AuditingFields;
 import lombok.AllArgsConstructor;
