@@ -13,7 +13,10 @@ public enum ErrorCode {
     INVALID_PERMISSION(HttpStatus.UNAUTHORIZED, ""),
     DATABASE_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, ""),
     DUPLICATED_USER_EMAIL(HttpStatus.CONFLICT, ""),
-    NOT_LOGIN(HttpStatus.UNAUTHORIZED, "");
+    NOT_LOGIN(HttpStatus.UNAUTHORIZED, ""),
+    FILE_EXCEPTION(HttpStatus.CONFLICT, ""),
+    DATA_NOT_FOUND(HttpStatus.NOT_FOUND, ""),
+    FILE_NOT_FOUND(HttpStatus.NOT_FOUND, "");
 
     private HttpStatus httpStatus;
     private String message;

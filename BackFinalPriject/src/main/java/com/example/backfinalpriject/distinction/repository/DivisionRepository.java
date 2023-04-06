@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface DivisionRepository extends JpaRepository<Division, Long> {
 
-
+    Optional<Division> findByDivisionNameContaining(String divisonName);
 
     Optional<Division> findByDivisionName(String divisionName);
 }
