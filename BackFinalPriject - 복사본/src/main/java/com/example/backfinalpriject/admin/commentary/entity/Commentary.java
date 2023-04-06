@@ -1,8 +1,8 @@
 package com.example.backfinalpriject.admin.commentary.entity;
 
-
+import com.example.backfinalpriject.admin.commentary.dto.CommentaryRequest;
+import com.example.backfinalpriject.config.AuditingFields;
 import com.example.backfinalpriject.distinction.entity.Subject;
-import com.example.backfinalpriject.entity.AuditingFields;
 import lombok.*;
 
 import javax.persistence.*;
@@ -11,6 +11,7 @@ import java.util.List;
 
 @Entity
 @Getter
+@AllArgsConstructor
 @RequiredArgsConstructor
 @Table(name = "commentary")
 public class Commentary extends AuditingFields {
@@ -28,11 +29,12 @@ public class Commentary extends AuditingFields {
     @Setter @Column(name = "instructor_name")
     private String instructorName;
 
-    @Setter @Column(name = "instructor_img")
-    private String instructorImg;
-
     @Setter @Column(name = "title")
     private String title;
+
+    @Setter
+    @OneToOne(mappedBy = "commentary")
+    private InstructorImg instructorImg;
 
     @Setter @OneToMany(mappedBy = "commentary", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<CommentaryVideo> commentaryVideoList = new ArrayList<>();
@@ -40,10 +42,11 @@ public class Commentary extends AuditingFields {
     @Setter @OneToMany(mappedBy = "commentary", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<CommentaryFile> commentaryFileList = new ArrayList<>();
 
-    @Setter @Column(name = "views")
-    private Long views;
-
-    @Setter @Column(name = "fileAttached")
-    private Integer fileAttached;
-
+    public static Commentary of(CommentaryRequest request, Subject subject){
+        Commentary commentary = new Commentary();
+        commentary.setSubject(subject);
+        commentary.setInstructorName(request.getInstructorName());
+        commentary.setTitle(request.getTitle());
+        return commentary;
+    }
 }
