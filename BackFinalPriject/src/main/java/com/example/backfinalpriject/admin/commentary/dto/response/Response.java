@@ -1,4 +1,4 @@
-package com.example.backfinalpriject.admin.commentary.dto;
+package com.example.backfinalpriject.admin.commentary.dto.response;
 
 import lombok.Data;
 
