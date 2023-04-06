@@ -1,8 +1,8 @@
 package com.example.backfinalpriject.admin.commentary.service;
 
-import com.example.backfinalpriject.admin.commentary.dto.CommentaryRequest;
-import com.example.backfinalpriject.admin.commentary.dto.CommentaryResponse;
-import com.example.backfinalpriject.admin.commentary.dto.VideoUrlRequest;
+import com.example.backfinalpriject.admin.commentary.dto.request.CommentaryRequest;
+import com.example.backfinalpriject.admin.commentary.dto.response.CommentaryResponse;
+import com.example.backfinalpriject.admin.commentary.dto.request.VideoUrlRequest;
 import com.example.backfinalpriject.admin.commentary.entity.Commentary;
 import com.example.backfinalpriject.admin.commentary.entity.CommentaryFile;
 import org.springframework.web.multipart.MultipartFile;

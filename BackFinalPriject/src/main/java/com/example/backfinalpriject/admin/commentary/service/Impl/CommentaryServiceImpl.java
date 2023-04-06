@@ -1,6 +1,10 @@
 package com.example.backfinalpriject.admin.commentary.service.Impl;
 
-import com.example.backfinalpriject.admin.commentary.dto.*;
+import com.example.backfinalpriject.admin.commentary.dto.request.CommentaryRequest;
+import com.example.backfinalpriject.admin.commentary.dto.request.VideoUrlRequest;
+import com.example.backfinalpriject.admin.commentary.dto.response.CommentaryResponse;
+import com.example.backfinalpriject.admin.commentary.dto.response.Response;
+import com.example.backfinalpriject.admin.commentary.dto.response.VideoUrlResponse;
 import com.example.backfinalpriject.admin.commentary.entity.Commentary;
 import com.example.backfinalpriject.admin.commentary.entity.CommentaryFile;
 import com.example.backfinalpriject.admin.commentary.entity.CommentaryVideo;
