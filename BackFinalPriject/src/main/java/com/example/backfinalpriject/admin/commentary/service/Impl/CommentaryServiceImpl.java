@@ -1,6 +1,11 @@
 package com.example.backfinalpriject.admin.commentary.service.Impl;
 
-import com.example.backfinalpriject.admin.commentary.dto.*;
+import com.example.backfinalpriject.admin.commentary.dto.request.CommentaryRequest;
+import com.example.backfinalpriject.admin.commentary.dto.request.VideoUrlRequest;
+import com.example.backfinalpriject.admin.commentary.dto.response.CommentaryResponse;
+import com.example.backfinalpriject.admin.commentary.dto.response.Response;
+import com.example.backfinalpriject.admin.commentary.dto.response.SearchResponse;
+import com.example.backfinalpriject.admin.commentary.dto.response.VideoUrlResponse;
 import com.example.backfinalpriject.admin.commentary.entity.Commentary;
 import com.example.backfinalpriject.admin.commentary.entity.CommentaryFile;
 import com.example.backfinalpriject.admin.commentary.entity.CommentaryVideo;
@@ -195,6 +200,43 @@ public class CommentaryServiceImpl implements CommentaryService {
     public CommentaryFile getFile(Long id){ // 파일 찾기
         CommentaryFile file = commentaryFileRepository.findByIdNumber(id).orElseThrow(null);
         return file;
+    }
+
+
+    /**
+     * 교수이름 검색
+     */
+    @Transactional(readOnly = true)
+    @Override
+    public List<SearchResponse> searchInstructorName(String instructorName) {
+        return commentaryRepository.findCommentaryByInstructorNameContaining(instructorName)
+                .stream().map(SearchResponse::new)
+                .collect(Collectors.toList());
+    }
+
+
+    /**
+     * 과목 검색
+     */
+    @Transactional(readOnly = true)
+    @Override
+    public List<SearchResponse> searchSubjectName(String subjectName) {
+        return commentaryRepository.findCommentaryBySubjectNameContaining(subjectName)
+                .stream().map(SearchResponse::new)
+                .collect(Collectors.toList());
+    }
+
+
+    /**
+     * 연도 검색
+     */
+    @Transactional(readOnly = true)
+    @Override
+    public List<SearchResponse> searchCreatedDate(Integer createdDate) {
+        System.out.println("createdDate = " + createdDate);
+        return commentaryRepository.findCommentaryByCreatedDateContaining(createdDate)
+                .stream().map(SearchResponse::new)
+                .collect(Collectors.toList());
     }
 
 }

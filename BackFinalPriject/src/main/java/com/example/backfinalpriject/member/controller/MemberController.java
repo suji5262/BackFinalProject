@@ -1,4 +1,4 @@
-package com.example.backfinalpriject.controller;
+package com.example.backfinalpriject.member.controller;
 
 import com.example.backfinalpriject.member.dto.request.MemberLoginRequest;
 import com.example.backfinalpriject.member.dto.request.MemberSignupRequest;

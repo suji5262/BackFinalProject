@@ -1,8 +1,9 @@
 package com.example.backfinalpriject.admin.commentary.controller;
 
-import com.example.backfinalpriject.admin.commentary.dto.CommentaryRequest;
-import com.example.backfinalpriject.admin.commentary.dto.CommentaryResponse;
-import com.example.backfinalpriject.admin.commentary.dto.VideoUrlRequest;
+import com.example.backfinalpriject.admin.commentary.dto.request.CommentaryRequest;
+import com.example.backfinalpriject.admin.commentary.dto.response.CommentaryResponse;
+import com.example.backfinalpriject.admin.commentary.dto.request.VideoUrlRequest;
+import com.example.backfinalpriject.admin.commentary.dto.response.SearchResponse;
 import com.example.backfinalpriject.admin.commentary.entity.CommentaryFile;
 import com.example.backfinalpriject.admin.commentary.service.CommentaryService;
 import com.example.backfinalpriject.admin.commentary.service.FileService;
@@ -123,6 +124,27 @@ public class CommentaryController {
         }
     }
 
+
+    @GetMapping("/commentary/search/instructorName") //  교수명 검색
+    public ResponseEntity<List<SearchResponse>> searchInstructorName
+            (@RequestParam String instructorName){
+        List<SearchResponse> searchInstructorNameList = commentaryService.searchInstructorName(instructorName);
+        return ResponseEntity.ok().body(searchInstructorNameList);
+    }
+
+    @GetMapping("/commentary/search/subjectName") //  과목명 검색
+    public ResponseEntity<List<SearchResponse>> searchSubjectName
+            (@RequestParam String subjectName){
+        List<SearchResponse> searchSubjectNameList = commentaryService.searchSubjectName(subjectName);
+        return ResponseEntity.ok().body(searchSubjectNameList);
+    }
+
+    @GetMapping("/commentary/search/createdDate") //  연도 검색
+    public ResponseEntity<List<SearchResponse>> searchCreatedDate
+            (@RequestParam Integer createdDate){
+        List<SearchResponse> searchCreatedDateList = commentaryService.searchCreatedDate(createdDate);
+        return ResponseEntity.ok().body(searchCreatedDateList);
+    }
 }
 
 
