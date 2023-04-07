@@ -1,9 +1,16 @@
 package com.example.backfinalpriject.admin.commentary.controller;
 
+<<<<<<< HEAD
 import com.example.backfinalpriject.admin.commentary.dto.request.CommentaryRequest;
 import com.example.backfinalpriject.admin.commentary.dto.response.CommentaryResponse;
 import com.example.backfinalpriject.admin.commentary.dto.request.VideoUrlRequest;
 import com.example.backfinalpriject.admin.commentary.dto.response.SearchResponse;
+=======
+
+import com.example.backfinalpriject.admin.commentary.dto.request.CommentaryRequest;
+import com.example.backfinalpriject.admin.commentary.dto.request.VideoUrlRequest;
+import com.example.backfinalpriject.admin.commentary.dto.response.CommentaryResponse;
+>>>>>>> feature/Authentication
 import com.example.backfinalpriject.admin.commentary.entity.CommentaryFile;
 import com.example.backfinalpriject.admin.commentary.service.CommentaryService;
 import com.example.backfinalpriject.admin.commentary.service.FileService;
@@ -32,7 +39,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CommentaryController {
 
-    @Value("${file.dir}")
+    @Value("${site-file.upload-dir}")
     private String fileDir;
 
     @Autowired

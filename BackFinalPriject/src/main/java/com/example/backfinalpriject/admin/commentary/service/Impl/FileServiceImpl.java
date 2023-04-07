@@ -28,7 +28,7 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 public class FileServiceImpl implements FileService {
 
-    @Value("${file.dir}")
+    @Value("${site-file.upload-dir}")
     private String fileDir;
 
     private final CommentaryFileRepository commentaryFileRepository;

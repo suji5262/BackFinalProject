@@ -39,7 +39,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CommentaryServiceImpl implements CommentaryService {
 
-    @Value("${file.dir}")
+    @Value("${site-file.upload-dir}")
     private String fileDir;
 
     private final CommentaryRepository commentaryRepository;

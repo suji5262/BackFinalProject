@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @RestController
@@ -18,22 +19,28 @@ import java.util.List;
 public class StrategyController {
 
     private final StrategyService strategyService;
+    private final HttpSession session;
 
 
 
     @PostMapping("/admin/strategy")
     public String strategyBoard(@RequestParam("file") MultipartFile file,@RequestParam("video") MultipartFile video, StrategyRequest strategyRequest, StrategyVideoRequest videoRequest){
-        return strategyService.strategyBoard(file,video,strategyRequest,videoRequest);
+        String email = (String) session.getAttribute("email");
+
+        return strategyService.strategyBoard(file,video,strategyRequest,videoRequest,email);
     }
 
     @PatchMapping("/admin/strategy/{strategyId}")
     public String updateStrategy(Long strategyId,@RequestParam("file") MultipartFile file, @RequestParam("video") MultipartFile video, StrategyRequest strategyRequest, StrategyVideoRequest videoRequest){
-        return strategyService.updateStrategy(strategyId,file,video,strategyRequest,videoRequest);
+        String email = (String) session.getAttribute("email");
+        return strategyService.updateStrategy(email,strategyId,file,video,strategyRequest,videoRequest);
     }
 
     @DeleteMapping("/admin/strategy/{strategyId}")
     public String deleteStrategy(  Long strategyId){
-        return strategyService.deleteStrategy(strategyId);
+
+        String email = (String) session.getAttribute("email");
+        return strategyService.deleteStrategy(email,strategyId);
     }
 
     @GetMapping("/strategy") // 페이지 전체조회
