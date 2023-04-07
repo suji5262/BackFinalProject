@@ -12,7 +12,7 @@ public interface CommentaryRepository extends JpaRepository<Commentary, Long> {
     @Query("select c from Commentary c join fetch c.instructorImg where c.instructorName like %:name%")
     List<Commentary> findCommentaryByInstructorNameContaining(@Param("name") String instructorName); // 교수명 검색
 
-    @Query("select c from Commentary c join c.instructorImg join c.subject s where s.subjectName like %:name%") //과목명 검색
+    @Query("select c from Commentary c join fetch c.instructorImg join fetch c.subject s where s.subjectName like %:name%") //과목명 검색
     List<Commentary> findCommentaryBySubjectNameContaining(@Param("name") String subjectName);
 
     @Query("select c from Commentary c join fetch c.instructorImg where year(c.createdDate) = :year")
