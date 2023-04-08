@@ -44,4 +44,10 @@ public class InstructorImg {
         instructorImg.setFilePath(filePath);
         return instructorImg;
     }
+
+    public void updateImg(String originalFileName, String savedName, String filePath){
+        this.originalFileName = originalFileName;
+        this.storedFileName = savedName;
+        this.filePath = filePath;
+    }
 }

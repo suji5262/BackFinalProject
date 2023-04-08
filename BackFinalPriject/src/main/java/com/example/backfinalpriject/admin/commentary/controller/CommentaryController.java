@@ -1,16 +1,17 @@
 package com.example.backfinalpriject.admin.commentary.controller;
 
 import com.example.backfinalpriject.admin.commentary.dto.request.CommentaryRequest;
-import com.example.backfinalpriject.admin.commentary.dto.response.CommentaryResponse;
 import com.example.backfinalpriject.admin.commentary.dto.request.VideoUrlRequest;
+import com.example.backfinalpriject.admin.commentary.dto.response.CommentaryResponse;
+import com.example.backfinalpriject.admin.commentary.dto.response.Response;
 import com.example.backfinalpriject.admin.commentary.dto.response.SearchResponse;
 import com.example.backfinalpriject.admin.commentary.entity.CommentaryFile;
 import com.example.backfinalpriject.admin.commentary.service.CommentaryService;
-import com.example.backfinalpriject.admin.commentary.service.FileService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpHeaders;
@@ -23,26 +24,23 @@ import org.springframework.web.util.UriUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
+@Api(tags = {"기출해설 페이지"}, description = "기출해설 등록/조회/삭제/수정을 담당합니다.")
 public class CommentaryController {
-
-    @Value("${file.dir}")
-    private String fileDir;
 
     @Autowired
     ResourceLoader resourceLoader;
 
     private final CommentaryService commentaryService;
-    private final FileService fileService;
 
+    @ApiOperation(value = "기출해설 게시글 등록", notes = "기출해설 게시글을 등록합니다.")
     @PostMapping("/admin/commentary")
-    public ResponseEntity<Long> create(
+    public ResponseEntity<String> create(
             @RequestPart(value = "commentaryRequest") CommentaryRequest request,
             @RequestPart(value = "instructorImg", required = false) MultipartFile instructorImg,
             @RequestPart(value = "file", required = false) MultipartFile file,
@@ -52,11 +50,12 @@ public class CommentaryController {
         log.info("instructorImg: {}", instructorImg);
         log.info("files: {}", file);
         log.info("videoUrl: {}", videoUrlRequests);
-        Long id =commentaryService.create(request, instructorImg, file, videoUrlRequests);
-        return new ResponseEntity<Long>(id, HttpStatus.OK);
+        commentaryService.create(request, instructorImg, file, videoUrlRequests);
+        return new ResponseEntity<>("success", HttpStatus.OK);
     }
 
-    @PatchMapping("/commentary/{id}")
+    @ApiOperation(value = "기출해설 게시글 수정", notes = "기출해설 게시글을 수정합니다.")
+    @PatchMapping("/admin/commentary/{id}")
     public ResponseEntity<CommentaryResponse> modifyCommentary(
             @PathVariable("id") Long id,
             @RequestPart(value = "commentaryRequest") CommentaryRequest request,
@@ -68,40 +67,45 @@ public class CommentaryController {
         log.info("instructorImg: {}", instructorImg);
         log.info("files: {}", file);
         log.info("videoUrl: {}", videoUrlRequests);
-        CommentaryResponse response =commentaryService.modify(request, instructorImg, file, videoUrlRequests);
-        return new ResponseEntity<CommentaryResponse>(response, HttpStatus.OK);
+        CommentaryResponse response =commentaryService.modify(id, request, instructorImg, file, videoUrlRequests);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @DeleteMapping ("/commentary/{id}")
+    @ApiOperation(value = "기출해설 게시글 삭제", notes = "기출해설 게시글을 삭제합니다.")
+    @DeleteMapping ("/admin/commentary/{id}")
     public ResponseEntity<String> deleteCommentary(@PathVariable Long id){
         commentaryService.deleteCommentary(id);
         return new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
     }
 
+    @ApiOperation(value = "기출해설 리스트 조회", notes = "기출해설 페이지에서 리스트를 보여줍니다.")
+    @GetMapping("/commentary")
+    public ResponseEntity<List<CommentaryResponse>> getCommentaryList(){
+        List<CommentaryResponse> commentaryList = commentaryService.getCommentaryList();
+        return ResponseEntity.ok().body(commentaryList);
+    }
+
+    @ApiOperation(value = "기출해설 상세 게시글 조회", notes = "기출해설 게시글의 상세게시글을 조회합니다.")
     @GetMapping("/commentary/{id}")
     public ResponseEntity<CommentaryResponse> getCommentaryDetail(@PathVariable Long id){
-        CommentaryResponse commentaryResponse = commentaryService.getCommentaryDetail(id);
-        return new ResponseEntity<>(commentaryResponse, HttpStatus.OK);
+        CommentaryResponse commentaryDetailResponse = commentaryService.getCommentaryDetail(id);
+        return new ResponseEntity<>(commentaryDetailResponse, HttpStatus.OK);
     }
 
-    @PostMapping(value="uploadFile")
-    public ResponseEntity<String> uploadFile(MultipartFile file) throws IllegalStateException, IOException{
-
-        if( !file.isEmpty() ) {
-            log.debug("file org name = {}", file.getOriginalFilename());
-            log.debug("file content type = {}", file.getContentType());
-            file.transferTo(new File(file.getOriginalFilename()));
-        }
-
-        return new ResponseEntity<>("", HttpStatus.OK);
+    @ApiOperation(value = "기출해설 교수 이미지 조회", notes = "기출해설의 특정 교수이미지를 보여줍니다.")
+    @GetMapping("/image/{commentaryId}")
+    public ResponseEntity<Response> getImage(@PathVariable("commentaryId") Long commentaryId){
+        Response response = commentaryService.getResponse(commentaryId, null);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/download/{id}")
-    public ResponseEntity<Resource> resourceFileDownload(@PathVariable Long id) {
+    @ApiOperation(value = "기출해설 첨부파일 다운로드", notes = "기출해설 게시글의 첨부파일을 다운로드합니다.")
+    @GetMapping("/download/{fileId}")
+    public ResponseEntity<Resource> resourceFileDownload(@PathVariable("fileId") Long fileId) {
         try {
-            CommentaryFile commentaryFile = commentaryService.getFile(id);
-            commentaryFile.download();
+            CommentaryFile commentaryFile = commentaryService.getFile(fileId);
             if (commentaryFile == null) return null;
+            commentaryService.upDownloadCnt(commentaryFile);
             String storedFileName = commentaryFile.getStoredFileName();
             String originalFileName = commentaryFile.getOriginalFileName();
             String encodedUploadFileName = UriUtils.encode(originalFileName, StandardCharsets.UTF_8);
@@ -124,7 +128,7 @@ public class CommentaryController {
         }
     }
 
-
+    @ApiOperation(value = "기출해설 페이지내 교수명 검색", notes = "기출해설 페이지에서 교수명을 검색합니다.")
     @GetMapping("/commentary/search/instructorName") //  교수명 검색
     public ResponseEntity<List<SearchResponse>> searchInstructorName
             (@RequestParam String instructorName){
@@ -132,6 +136,7 @@ public class CommentaryController {
         return ResponseEntity.ok().body(searchInstructorNameList);
     }
 
+    @ApiOperation(value = "기출해설 페이지내 과목명 검색", notes = "기출해설 페이지에서 과목명을 검색합니다.")
     @GetMapping("/commentary/search/subjectName") //  과목명 검색
     public ResponseEntity<List<SearchResponse>> searchSubjectName
             (@RequestParam String subjectName){
@@ -139,6 +144,7 @@ public class CommentaryController {
         return ResponseEntity.ok().body(searchSubjectNameList);
     }
 
+    @ApiOperation(value = "기출해설 페이지내 연도 검색", notes = "기출해설 페이지에서 연도명을 검색합니다.")
     @GetMapping("/commentary/search/createdDate") //  연도 검색
     public ResponseEntity<List<SearchResponse>> searchCreatedDate
             (@RequestParam Integer createdDate){
@@ -146,6 +152,3 @@ public class CommentaryController {
         return ResponseEntity.ok().body(searchCreatedDateList);
     }
 }
-
-
-
