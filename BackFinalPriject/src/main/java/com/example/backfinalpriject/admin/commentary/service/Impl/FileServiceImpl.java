@@ -28,7 +28,7 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 public class FileServiceImpl implements FileService {
 
-    @Value("C:/Users/zan04/file/")
+    @Value("${file.dir}")
     private String fileDir;
 
     private final CommentaryFileRepository commentaryFileRepository;
