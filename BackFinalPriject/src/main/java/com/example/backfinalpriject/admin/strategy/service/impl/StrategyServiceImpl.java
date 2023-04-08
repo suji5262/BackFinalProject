@@ -66,7 +66,9 @@ public class StrategyServiceImpl implements StrategyService {
             strategyRepository.save(strategy);
             */
             Member member = memberRepository.findByEmail(email).orElse(null);
-
+            System.out.println("member=" + member.getRole());
+            System.out.println("member=" + member.getId());
+            System.out.println("member=" + member.getEmail());
 
             if(member.getRole() == 1){
 
@@ -82,7 +84,7 @@ public class StrategyServiceImpl implements StrategyService {
                 Strategy strategy = strategyRequest.toEntity(subject);
 
                 StrategyVideo strategyVideo = videoRequest.toEntity(strategy);
-             
+
 
                 strategyRepository.save(strategy);
                 strategyVideoRepository.save(strategyVideo);

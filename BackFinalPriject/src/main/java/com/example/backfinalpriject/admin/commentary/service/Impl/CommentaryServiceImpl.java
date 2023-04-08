@@ -41,7 +41,7 @@ import java.util.stream.Collectors;
 public class CommentaryServiceImpl implements CommentaryService {
 
 
-    @Value("${site-file.upload-dir}")
+
 
 
 

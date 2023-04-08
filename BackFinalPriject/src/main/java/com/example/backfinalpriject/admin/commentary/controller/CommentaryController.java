@@ -37,7 +37,7 @@ import java.util.List;
 public class CommentaryController {
 
 
-    @Value("${site-file.upload-dir}")
+
 
 
 

@@ -24,7 +24,7 @@ public class StrategyController {
 
 
     @PostMapping("/admin/strategy")
-    public String strategyBoard(@RequestParam("file") MultipartFile file,@RequestParam("video") MultipartFile video, StrategyRequest strategyRequest, StrategyVideoRequest videoRequest){
+    public String strategyBoard(@RequestParam(value="file",required = false) MultipartFile file,@RequestParam(value="video",required = false) MultipartFile video, StrategyRequest strategyRequest, StrategyVideoRequest videoRequest){
         String email = (String) session.getAttribute("email");
 
         return strategyService.strategyBoard(file,video,strategyRequest,videoRequest,email);
