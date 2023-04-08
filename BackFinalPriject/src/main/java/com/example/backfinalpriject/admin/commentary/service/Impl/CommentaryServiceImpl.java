@@ -23,6 +23,7 @@ import com.example.backfinalpriject.distinction.repository.SubjectRepository;
 import com.example.backfinalpriject.exception.ErrorCode;
 import com.example.backfinalpriject.exception.GlobalException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
@@ -38,6 +39,11 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class CommentaryServiceImpl implements CommentaryService {
+
+
+
+
+
 
     private final EntityManager em;
     private final CommentaryRepository commentaryRepository;

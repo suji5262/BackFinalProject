@@ -12,6 +12,8 @@ import com.example.backfinalpriject.admin.strategy.repository.StrategyVideoRepos
 import com.example.backfinalpriject.admin.strategy.service.StrategyService;
 import com.example.backfinalpriject.distinction.entity.Subject;
 import com.example.backfinalpriject.distinction.repository.SubjectRepository;
+import com.example.backfinalpriject.entity.Member;
+import com.example.backfinalpriject.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -37,12 +39,14 @@ public class StrategyServiceImpl implements StrategyService {
     private final StrategyVideoRepository strategyVideoRepository;
     private final SubjectRepository subjectRepository;
 
+    private final MemberRepository memberRepository;
+
 
     @Value("C:/Users/zan04/file/")
     private String uploadDir;
 
     @Override
-    public String strategyBoard(MultipartFile file,MultipartFile video, StrategyRequest strategyRequest, StrategyVideoRequest videoRequest) {
+    public String strategyBoard(MultipartFile file,MultipartFile video, StrategyRequest strategyRequest, StrategyVideoRequest videoRequest,String email) {
 
         try{
             /*
@@ -61,27 +65,35 @@ public class StrategyServiceImpl implements StrategyService {
 
             strategyRepository.save(strategy);
             */
-            String image = uploadPic(file);
-            strategyRequest.setImage(image);
+            Member member = memberRepository.findByEmail(email).orElse(null);
+            System.out.println("member=" + member.getRole());
+            System.out.println("member=" + member.getId());
+            System.out.println("member=" + member.getEmail());
 
-            String video1= uploadPic(video);
-            videoRequest.setVideoLink(video1);
-            
-            Subject subject = subjectRepository.findBySubjectName(strategyRequest.getSubjectName()).get();
+            if(member.getRole() == 1){
 
-            Strategy strategy = strategyRequest.toEntity(subject);
+                String image = uploadPic(file);
+                strategyRequest.setImage(image);
 
-            StrategyVideo strategyVideo = videoRequest.toEntity(strategy);
-           // strategyVideo.addStrategy(strategy);
-            // strategy.addStrategyVideo(strategyVideo);
+                String video1= uploadPic(video);
+                videoRequest.setVideoLink(video1);
 
-            strategyRepository.save(strategy);
-            strategyVideoRepository.save(strategyVideo);
 
+                Subject subject = subjectRepository.findBySubjectName(strategyRequest.getSubjectName()).get();
+
+                Strategy strategy = strategyRequest.toEntity(subject);
+
+                StrategyVideo strategyVideo = videoRequest.toEntity(strategy);
+
+
+                strategyRepository.save(strategy);
+                strategyVideoRepository.save(strategyVideo);
+
+            }
 
         }catch (Exception e){
             e.printStackTrace();
-            return "failed";
+            return "관리자만 작성 가능합니다";
         }
 
         return "success";
@@ -90,45 +102,55 @@ public class StrategyServiceImpl implements StrategyService {
 
 
     @Override
-    public String updateStrategy(Long strategyId,MultipartFile file, MultipartFile video, StrategyRequest strategyRequest, StrategyVideoRequest videoRequest) {
+    public String updateStrategy(String email,Long strategyId,MultipartFile file, MultipartFile video, StrategyRequest strategyRequest, StrategyVideoRequest videoRequest) {
         try{
-            String image = uploadPic(file);
-            strategyRequest.setImage(image);
 
-            String video1= uploadPic(video);
-            videoRequest.setVideoLink(video1);
+            Member member = memberRepository.findByEmail(email).orElse(null);
+            if( member.getRole() == 1){
 
-            Strategy strategy = strategyRepository.findById(strategyId).get();
+                String image = uploadPic(file);
+                strategyRequest.setImage(image);
 
-            Subject subject = subjectRepository.findBySubjectName(strategyRequest.getSubjectName()).get();
-            strategy.updateStrategy(subject,strategyRequest.getLectureName(),strategyRequest.getInstructorName(),
-                    strategyRequest.getImage(),strategyRequest.getContent());
-            StrategyVideo strategyVideo = strategyVideoRepository.findByStrategy_id(strategy.getId()).get();
+                String video1= uploadPic(video);
+                videoRequest.setVideoLink(video1);
 
-            strategyVideo.updateVideo(videoRequest.getVideoLink());
+                Strategy strategy = strategyRepository.findById(strategyId).get();
 
+                Subject subject = subjectRepository.findBySubjectName(strategyRequest.getSubjectName()).get();
+                strategy.updateStrategy(subject,strategyRequest.getLectureName(),strategyRequest.getInstructorName(),
+                        strategyRequest.getImage(),strategyRequest.getContent());
+                StrategyVideo strategyVideo = strategyVideoRepository.findByStrategy_id(strategy.getId()).get();
+
+                strategyVideo.updateVideo(videoRequest.getVideoLink());
+
+            }
 
         }catch (Exception e){
             e.printStackTrace();
-            return "failed";
+            return "관리자만 접근 가능합니다!";
         }
 
         return "success";
     }
 
     @Override
-    public String deleteStrategy(Long strategyId) {
+    public String deleteStrategy(String email,Long strategyId) {
         try{
-            Strategy strategy = strategyRepository.findById(strategyId).get();
+            Member member = memberRepository.findByEmail(email).orElse(null);
 
-            StrategyVideo strategyVideo = strategyVideoRepository.findByStrategy_id(strategy.getId()).get();
+            if(member.getRole() ==1){
 
-            strategyVideoRepository.deleteByStrategy_id(strategyVideo.getId());
-            strategyRepository.deleteById(strategy.getId());
+                Strategy strategy = strategyRepository.findById(strategyId).get();
 
-        }catch (Exception e){
+                StrategyVideo strategyVideo = strategyVideoRepository.findByStrategy_id(strategy.getId()).get();
+
+                strategyVideoRepository.deleteByStrategy_id(strategyVideo.getId());
+                strategyRepository.deleteById(strategy.getId());
+            }
+
+        }catch (NullPointerException e){
             e.printStackTrace();
-            return "failed";
+            return "관리자만 접근 가능합니다";
         }
 
         return "success";

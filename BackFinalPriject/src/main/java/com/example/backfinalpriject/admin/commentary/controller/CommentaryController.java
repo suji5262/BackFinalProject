@@ -1,10 +1,12 @@
 package com.example.backfinalpriject.admin.commentary.controller;
 
+
 import com.example.backfinalpriject.admin.commentary.dto.request.CommentaryRequest;
 import com.example.backfinalpriject.admin.commentary.dto.request.VideoUrlRequest;
 import com.example.backfinalpriject.admin.commentary.dto.response.CommentaryResponse;
 import com.example.backfinalpriject.admin.commentary.dto.response.Response;
 import com.example.backfinalpriject.admin.commentary.dto.response.SearchResponse;
+
 import com.example.backfinalpriject.admin.commentary.entity.CommentaryFile;
 import com.example.backfinalpriject.admin.commentary.service.CommentaryService;
 import io.swagger.annotations.Api;
@@ -12,6 +14,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpHeaders;
@@ -32,6 +35,11 @@ import java.util.List;
 @RequiredArgsConstructor
 @Api(tags = {"기출해설 페이지"}, description = "기출해설 등록/조회/삭제/수정을 담당합니다.")
 public class CommentaryController {
+
+
+
+
+
 
     @Autowired
     ResourceLoader resourceLoader;

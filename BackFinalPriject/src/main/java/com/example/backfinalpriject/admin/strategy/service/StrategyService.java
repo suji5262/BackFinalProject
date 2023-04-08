@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface StrategyService {
 
-    String strategyBoard(MultipartFile file,MultipartFile video, StrategyRequest strategyRequest, StrategyVideoRequest videoRequest);
+    String strategyBoard(MultipartFile file,MultipartFile video, StrategyRequest strategyRequest, StrategyVideoRequest videoRequest,String email);
 
     List<StrategyPageResponse> getStrategyPageList(); // 전체조회
 
@@ -21,9 +21,9 @@ public interface StrategyService {
 
     List<StrategySearchResponse> selectInstructorName(String instructorName);
 
-    String updateStrategy(Long strategyID,MultipartFile file,MultipartFile video, StrategyRequest strategyRequest, StrategyVideoRequest videoRequest);
+    String updateStrategy(String email,Long strategyID,MultipartFile file,MultipartFile video, StrategyRequest strategyRequest, StrategyVideoRequest videoRequest);
 
-    String deleteStrategy(Long strategyId);
+    String deleteStrategy(String email,Long strategyId);
 
 
 }
