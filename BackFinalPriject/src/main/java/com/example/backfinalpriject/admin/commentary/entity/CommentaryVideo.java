@@ -39,4 +39,9 @@ public class CommentaryVideo {
         commentaryVideo.setVideoLink(request.getVideoUrl());
         return commentaryVideo;
     }
+
+    public void updateVideo(VideoUrlRequest request){
+        this.videoName = request.getVideoName();
+        this.videoLink = request.getVideoUrl();
+    }
 }

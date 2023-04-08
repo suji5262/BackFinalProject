@@ -10,28 +10,35 @@ import java.util.List;
 @Data
 public class CommentaryResponse {
 
-    private String division;
-    private String subject;
+    private String divisionName;
+    private String subjectName;
+    private Long commentaryId;
     private String instructorName;
-    private Response instructorImg;
-    private String title;
+    private String commentaryTitle;
     private LocalDateTime createdDate;
     private String fileName;
     private Long fileId;
+    private Long fileDownloadCount;
     private List<VideoUrlResponse> videoUrl;
 
-    public static CommentaryResponse of(Commentary commentary, List<VideoUrlResponse> videoUrl, Response response, CommentaryFile commentaryFile) {
+    public static CommentaryResponse of(Commentary commentary, List<VideoUrlResponse> videoUrl, CommentaryFile commentaryFile) {
         CommentaryResponse commentaryResponse = new CommentaryResponse();
-        commentaryResponse.setDivision(commentary.getSubject().getDivision().getDivisionName());
-        commentaryResponse.setSubject(commentary.getSubject().getSubjectName());
-        commentaryResponse.setInstructorImg(response);
+        commentaryResponse.setCommentaryId(commentary.getId());
+        commentaryResponse.setDivisionName(commentary.getSubject().getDivision().getDivisionName());
+        commentaryResponse.setSubjectName(commentary.getSubject().getSubjectName());
         commentaryResponse.setInstructorName(commentary.getInstructorName());
         commentaryResponse.setCreatedDate(commentary.getCreatedDate());
-        commentaryResponse.setTitle(commentary.getTitle());
-        commentaryResponse.setFileName(commentaryFile.getOriginalFileName());
-        commentaryResponse.setFileId(commentaryFile.getId());
+        commentaryResponse.setCommentaryTitle(commentary.getTitle());
+        if (commentaryFile == null){
+            commentaryResponse.setFileName(null);
+            commentaryResponse.setFileId(null);
+            commentaryResponse.setFileDownloadCount(null);
+        } else {
+            commentaryResponse.setFileName(commentaryFile.getOriginalFileName());
+            commentaryResponse.setFileId(commentaryFile.getId());
+            commentaryResponse.setFileDownloadCount(commentaryFile.getDownloadCount());
+        }
         commentaryResponse.setVideoUrl(videoUrl);
         return commentaryResponse;
     }
 }
-

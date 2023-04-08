@@ -24,7 +24,7 @@ public class WebSecurityConfig {
 
         return http
                 .authorizeRequests()
-                .antMatchers("/signup","/login", "/logout", "/commentary/**", "/strategy/**","/admin/**", "/admin/signup", "/admin/login", "/admin/logout","/admin/division").permitAll()
+                .antMatchers("/signup","/login", "/logout","/commentary", "/commentary/**", "/strategy/**","/admin/**", "/admin/signup", "/admin/login", "/admin/logout","/admin/division", "/download/*", "/image/*").permitAll()
                 .antMatchers(HttpMethod.POST, "/**").authenticated()
                 .and()
                 .authorizeRequests()

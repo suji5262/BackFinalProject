@@ -36,14 +36,14 @@ public class Commentary extends AuditingFields {
     private String title;
 
     @Setter
-    @OneToOne(mappedBy = "commentary")
+    @OneToOne(mappedBy = "commentary", orphanRemoval = true)
     private InstructorImg instructorImg;
 
-    @Setter @OneToMany(mappedBy = "commentary", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @Setter @OneToMany(mappedBy = "commentary", orphanRemoval = true)
     private List<CommentaryVideo> commentaryVideoList = new ArrayList<>();
 
-    @Setter @OneToMany(mappedBy = "commentary", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private List<CommentaryFile> commentaryFileList = new ArrayList<>();
+    @Setter @OneToOne(mappedBy = "commentary", orphanRemoval = true)
+    private CommentaryFile commentaryFile;
 
     public static Commentary of(CommentaryRequest request, Subject subject){
         Commentary commentary = new Commentary();
@@ -51,5 +51,11 @@ public class Commentary extends AuditingFields {
         commentary.setInstructorName(request.getInstructorName());
         commentary.setTitle(request.getTitle());
         return commentary;
+    }
+
+    public void update(CommentaryRequest request, Subject subject){
+        this.subject = subject;
+        this.instructorName = request.getInstructorName();
+        this.title = request.getTitle();
     }
 }
