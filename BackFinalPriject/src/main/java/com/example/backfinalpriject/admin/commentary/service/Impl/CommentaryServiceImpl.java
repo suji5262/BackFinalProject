@@ -29,19 +29,23 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.EntityManager;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-@Transactional
 @Service
 @RequiredArgsConstructor
 public class CommentaryServiceImpl implements CommentaryService {
 
-    @Value("${site-file.upload-dir}")
-    private String fileDir;
 
+    @Value("${site-file.upload-dir}")
+
+
+
+    private final EntityManager em;
     private final CommentaryRepository commentaryRepository;
     private final CommentaryVideoRepository commentaryVideoRepository;
     private final CommentaryFileRepository commentaryFileRepository;
@@ -50,40 +54,131 @@ public class CommentaryServiceImpl implements CommentaryService {
     private final InstructorImgRepository instructorImgRepository;
     private final FileService fileService;
 
+    /**
+     * 기출해설 등록
+     */
+    @Transactional
     @Override
-    public Long create(CommentaryRequest request, MultipartFile instructorImg, MultipartFile file, List<VideoUrlRequest> videoUrlRequest) throws Exception {
+    public String create(CommentaryRequest request, MultipartFile instructorImg, MultipartFile file, List<VideoUrlRequest> videoUrlRequest) throws Exception {
         Division division = divisionRepository.findByDivisionNameContaining(request.getDivision()).orElseThrow(
-                ()->new GlobalException(ErrorCode.DATABASE_ERROR, "division 오류"));
+                ()->new GlobalException(ErrorCode.DATABASE_ERROR, "해당 과목이 없습니다."));
         Subject subject = subjectRepository.findByDivisionAndSubjectNameContaining(division, request.getSubject())
-                .orElseThrow(()->new GlobalException(ErrorCode.DATABASE_ERROR, "과목 오류"));
-        Commentary commentary = commentaryRepository.save(Commentary.of(request, subject));
+                .orElseThrow(()->new GlobalException(ErrorCode.DATABASE_ERROR, "해당 과목이 없습니다."));
 
+        Commentary commentary = Commentary.of(request, subject);
         if (videoUrlRequest!= null){
             uploadCommentaryVideos(commentary, videoUrlRequest);
         }
         if (instructorImg != null && file != null){ // 이미지, 파일 두개 다 존재
-            saveImg(instructorImg, commentary);
+            InstructorImg newImage = saveImgInDir(instructorImg, commentary);
+            instructorImgRepository.save(newImage);
             fileService.store(file, commentary);
         } else if (instructorImg == null && file != null){ //파일만 존재
             fileService.store(file, commentary);
-        } else { // 이미지만 존재
-            saveImg(instructorImg, commentary);
+        } else if (instructorImg != null && file == null){ // 이미지만 존재
+            InstructorImg newImage = saveImgInDir(instructorImg, commentary);
+            instructorImgRepository.save(newImage);
         }
-        return commentary.getId();
+        commentaryRepository.save(commentary);
+        return "SUCCESS";
     }
 
+    /**
+     * 기출해설 수정
+     */
+    @Transactional
     @Override
-    public CommentaryResponse modify(CommentaryRequest request, MultipartFile instructorImg, MultipartFile file, List<VideoUrlRequest> videoUrlRequest) throws Exception {
-        return null;
+    public CommentaryResponse modify(Long id, CommentaryRequest request,
+                                     MultipartFile instructorImg,
+                                     MultipartFile file,
+                                     List<VideoUrlRequest> videoUrlRequest) throws Exception {
+
+        Commentary commentary = commentaryRepository.findById(id).orElseThrow(
+                ()-> new GlobalException(ErrorCode.FILE_NOT_FOUND, "해당 파일을 찾을수 없습니다"));
+        Division division = divisionRepository.findByDivisionNameContaining(request.getDivision()).orElseThrow(
+                ()->new GlobalException(ErrorCode.DATABASE_ERROR, "해당 과목이 없습니다."));
+        Subject subject = subjectRepository.findByDivisionAndSubjectNameContaining(division, request.getSubject())
+                .orElseThrow(()->new GlobalException(ErrorCode.DATABASE_ERROR, "해당 과목이 없습니다."));
+
+        List<VideoUrlResponse>  newVideoList = null;
+        CommentaryFile originalFile = null;
+        try {
+            // commentary 업데이트
+            commentary.update(request, subject);
+            em.flush();
+            // 비디오 리스트 업데이트
+            List<CommentaryVideo> commentaryVideoList = commentaryVideoRepository.findByCommentary(commentary);
+
+            for (int i = 0; i < videoUrlRequest.size(); i++) {
+                if (!videoUrlRequest.get(i).getVideoUrl().equals(commentaryVideoList.get(i).getVideoLink())){
+                    commentaryVideoList.get(i).updateVideo(videoUrlRequest.get(i));
+                }
+            }
+                newVideoList = commentaryVideoList.stream().map(n -> new VideoUrlResponse(n)).collect(Collectors.toList());
+
+                //교수 이미지 업데이트
+                InstructorImg originalImage = instructorImgRepository.findByCommentary(commentary).orElse(null);
+                if (originalImage == null && instructorImg != null) { // 새로운 이미지 추가
+                    InstructorImg newImg = saveImgInDir(instructorImg, commentary);
+                    instructorImgRepository.save(newImg);
+                } else if (instructorImg == null && originalImage != null){ // 기존 이미지 삭제
+                    instructorImgRepository.deleteById(originalImage.getId());
+                    fileService.deleteFile(originalImage.getStoredFileName()); //기존 이미지 삭제
+                } else if (instructorImg != null && !instructorImg.getOriginalFilename().equals(originalImage.getOriginalFileName())) {
+                    InstructorImg newImage = saveImgInDir(instructorImg, commentary); //새로운 이미지 저장
+                    fileService.deleteFile(originalImage.getStoredFileName()); //기존 이미지 삭제
+                    originalImage.updateImg(newImage.getOriginalFileName(), newImage.getStoredFileName(), newImage.getFilePath());
+                }
+
+                //파일 업데이트
+                originalFile = commentaryFileRepository.findByCommentary(commentary).orElse(null);
+                if (file != null && originalFile == null){
+                    originalFile = fileService.store(file, commentary);
+                } else if (file ==null && originalFile != null){
+                    commentaryFileRepository.deleteById(originalFile.getId());
+                    originalFile = null;
+                } else if (file != null && !file.getOriginalFilename().equals(originalFile.getOriginalFileName())) {
+                    originalFile = fileService.modify(file, originalFile);
+                    fileService.deleteFile(originalFile.getOriginalFileName()); // 기존 파일 삭제
+                }
+                return CommentaryResponse.of(commentary, newVideoList, originalFile);
+
+            } catch(Exception e){
+                e.printStackTrace();
+                return null;
+            }
     }
 
+    /**
+     * 기출해설 삭제
+     */
+    @Transactional
     @Override
     public void deleteCommentary(Long id) {
-        Commentary commentary = commentaryRepository.findById(id).orElseThrow(()-> new GlobalException(ErrorCode.FILE_NOT_FOUND, "해당 게시글이 존재하지 않습니다"));
+        Commentary commentary = commentaryRepository.findById(id).orElseThrow(
+                ()-> new GlobalException(ErrorCode.FILE_NOT_FOUND, "해당 게시글이 존재하지 않습니다"));
         commentaryRepository.delete(commentary);
     }
 
-    // 비디오 업로드
+    /**
+     * 기출해설 리스트 조회
+     */
+    @Transactional
+    @Override
+    public List<CommentaryResponse> getCommentaryList() {
+        List<Commentary> commentaryList = commentaryRepository.findAll();
+        List<CommentaryResponse> commentaryResponseList = new ArrayList<>();
+        for (Commentary commentary : commentaryList){
+            CommentaryResponse commentaryResponse = this.getCommentaryDetail(commentary.getId());
+            commentaryResponseList.add(commentaryResponse);
+        }
+        return commentaryResponseList;
+    }
+
+    /**
+     * 기출해설 비디오 url 업로드
+     */
+    @Transactional
     @Override
     public void uploadCommentaryVideos(Commentary commentary, List<VideoUrlRequest> videos) {
         for (VideoUrlRequest request : videos) {
@@ -91,32 +186,35 @@ public class CommentaryServiceImpl implements CommentaryService {
         }
     }
 
+    /**
+     * 기출해설 상세페이지 조회
+     */
+    @Transactional
     @Override
     public CommentaryResponse getCommentaryDetail(Long id){
-        Commentary commentary = commentaryRepository.findById(id).orElseThrow(
-                ()-> new GlobalException(ErrorCode.FILE_NOT_FOUND, "해당 게시글이 존재하지 않습니다."));
-        List<VideoUrlResponse> commentaryVideoList = commentaryVideoRepository.findByCommentary(commentary)
-                .stream().map(n-> new VideoUrlResponse(n)).collect(Collectors.toList());
-        CommentaryFile commentaryFile = commentaryFileRepository.findByIdNumber(commentary.getId())
-                .orElseThrow(null);
-        Response response = new Response();
 
         try {
-            response.setResponse("success");
-            response.setData(getImage(commentary));
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            response.setResponse("failed");
-            response.setData(null);
-        }
+            Commentary commentary = commentaryRepository.findById(id).orElseThrow(
+                    ()-> new GlobalException(ErrorCode.FILE_NOT_FOUND, "해당 게시글이 존재하지 않습니다."));
+            List<VideoUrlResponse> commentaryVideoList = commentaryVideoRepository.findByCommentary(commentary)
+                    .stream().map(n-> new VideoUrlResponse(n)).collect(Collectors.toList());
+            CommentaryFile commentaryFile = commentaryFileRepository.findByCommentary(commentary)
+                    .orElseThrow(null);
 
-        return CommentaryResponse.of(commentary, commentaryVideoList, response, commentaryFile);
+            return CommentaryResponse.of(commentary, commentaryVideoList, commentaryFile);
+
+        } catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
     }
 
-    //이미지 저장
+    /**
+     * 이미지 저장
+     */
+    @Transactional
     @Override
-    public Long saveImg(MultipartFile imageFile, Commentary commentary) throws Exception {
+    public InstructorImg saveImgInDir(MultipartFile imageFile, Commentary commentary) throws Exception {
         String imagePath = null;
         String absolutePath = new File("").getAbsolutePath() + "\\";
         String path = "images/profile";
@@ -151,15 +249,41 @@ public class CommentaryServiceImpl implements CommentaryService {
 
             file = new File(absolutePath + imagePath);
             imageFile.transferTo(file);
-            InstructorImg instructorImg = InstructorImg.of(commentary, origName, savedName, imagePath);
-            return instructorImgRepository.save(instructorImg).getId();
+            return InstructorImg.of(commentary, origName, savedName, imagePath);
         }
         else {
             throw new Exception("이미지 파일이 비어있습니다.");
         }
     }
 
-    //이미지 조회
+    /**
+     * 이미지 출력
+     */
+    @Transactional
+    @Override
+    public Response getResponse(Long id, Commentary commentary){
+
+        Response response = new Response();
+
+        try {
+            if (commentary == null){
+                commentary = commentaryRepository.findById(id).orElseThrow(null);
+            }
+
+            response.setResponse("success");
+            response.setData(getImage(commentary));
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            response.setResponse("failed");
+            response.setData(null);
+        }
+        return response;
+    }
+
+    /**
+     * 이미지 불러오기
+     */
     @Override
     public byte[] getImage(Commentary commentary) throws Exception {
         InstructorImg instructorImg = instructorImgRepository.findByCommentary(commentary).orElseThrow(null);
@@ -168,7 +292,6 @@ public class CommentaryServiceImpl implements CommentaryService {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
         String absolutePath = new File("").getAbsolutePath() + "\\";
-        System.out.println(absolutePath + imagePath);
         try {
             inputStream = new FileInputStream(absolutePath + imagePath);
         }
@@ -196,12 +319,22 @@ public class CommentaryServiceImpl implements CommentaryService {
         return fileArray;
     }
 
+    /**
+     * 첨부파일 불러오기
+     */
     @Override
-    public CommentaryFile getFile(Long id){ // 파일 찾기
-        CommentaryFile file = commentaryFileRepository.findByIdNumber(id).orElseThrow(null);
-        return file;
+    public CommentaryFile getFile(Long id){
+        return commentaryFileRepository.findById(id).orElseThrow(null);
     }
 
+    /**
+     * 첨부파일 다운로드수 증가
+     */
+    @Override
+    public void upDownloadCnt(CommentaryFile commentaryFile){
+        commentaryFile.download();
+        commentaryFileRepository.save(commentaryFile);
+    }
 
     /**
      * 교수이름 검색
@@ -214,7 +347,6 @@ public class CommentaryServiceImpl implements CommentaryService {
                 .collect(Collectors.toList());
     }
 
-
     /**
      * 과목 검색
      */
@@ -225,7 +357,6 @@ public class CommentaryServiceImpl implements CommentaryService {
                 .stream().map(SearchResponse::new)
                 .collect(Collectors.toList());
     }
-
 
     /**
      * 연도 검색

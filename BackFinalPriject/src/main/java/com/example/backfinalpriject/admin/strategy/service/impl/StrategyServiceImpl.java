@@ -82,8 +82,7 @@ public class StrategyServiceImpl implements StrategyService {
                 Strategy strategy = strategyRequest.toEntity(subject);
 
                 StrategyVideo strategyVideo = videoRequest.toEntity(strategy);
-                // strategyVideo.addStrategy(strategy);
-                // strategy.addStrategyVideo(strategyVideo);
+             
 
                 strategyRepository.save(strategy);
                 strategyVideoRepository.save(strategyVideo);

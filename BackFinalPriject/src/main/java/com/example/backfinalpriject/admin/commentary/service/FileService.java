@@ -12,9 +12,7 @@ public interface FileService {
 
     void init();
 
-    Long store(MultipartFile file, Commentary commentary);
-
-    Stream<Path> loadAll();
+    CommentaryFile store(MultipartFile file, Commentary commentary);
 
     Path load(String filename);
 
@@ -23,5 +21,7 @@ public interface FileService {
     public String deleteFile(String filename);
 
     CommentaryFile getFile(Long id);
+
+    CommentaryFile modify(MultipartFile file, CommentaryFile commentaryFile);
 
 }

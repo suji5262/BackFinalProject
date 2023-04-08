@@ -1,14 +1,15 @@
 package com.example.backfinalpriject.admin.commentary.repository;
 
+import com.example.backfinalpriject.admin.commentary.entity.Commentary;
 import com.example.backfinalpriject.admin.commentary.entity.CommentaryFile;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.Optional;
 
-public interface CommentaryFileRepository extends JpaRepository<CommentaryFile, Long> {
+public interface CommentaryFileRepository extends JpaRepository<CommentaryFile, Long>, JpaSpecificationExecutor<CommentaryFile> {
 
-    @Query(value = "select * from commentary_file where commentary_id = :id", nativeQuery = true)
-    Optional<CommentaryFile> findByIdNumber(@Param("id") Long id);
+    Optional<CommentaryFile> findById(Long id);
+
+    Optional<CommentaryFile> findByCommentary(Commentary commentary);
 }

@@ -43,7 +43,7 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public Long store(MultipartFile file, Commentary commentary) {
+    public CommentaryFile store(MultipartFile file, Commentary commentary) {
         try {
             if (file.isEmpty()) {
                 throw new Exception("ERROR : File is empty.");
@@ -69,8 +69,8 @@ public class FileServiceImpl implements FileService {
                         StandardCopyOption.REPLACE_EXISTING);
 
                 CommentaryFile commentaryFile = CommentaryFile.of(commentary, origName, savedName, filePath);
-                Long commentaryId = commentaryFileRepository.save(commentaryFile).getId();
-                return commentaryId;
+                CommentaryFile savedCommentaryFile = commentaryFileRepository.save(commentaryFile);
+                return savedCommentaryFile;
             }
         } catch (Exception e) {
             throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
@@ -78,14 +78,36 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public Stream<Path> loadAll() {
+    public CommentaryFile modify(MultipartFile file, CommentaryFile commentaryFile) {
         try {
+            if (file.isEmpty()) {
+                throw new Exception("ERROR : File is empty.");
+            }
             Path root = Paths.get(fileDir);
-            return Files.walk(root, 1)
-                    .filter(path -> !path.equals(root));
-        }
-        catch (IOException e) {
-            throw new RuntimeException("Failed to read stored files", e);
+            if (!Files.exists(root)) {
+                init();
+            }
+
+            String origName = file.getOriginalFilename();
+            // 파일 이름으로 쓸 uuid 생성
+            String uuid = UUID.randomUUID().toString();
+
+            String extension = origName.substring(origName.lastIndexOf("."));
+
+            String savedName = root + "/" + uuid + extension;
+
+            // 파일을 불러올 때 사용할 파일 경로
+            String filePath = root + "/" + uuid;
+
+            try (InputStream inputStream = file.getInputStream()) {
+                Files.copy(inputStream, root.resolve(savedName),
+                        StandardCopyOption.REPLACE_EXISTING);
+
+                commentaryFile.updateCommentaryFile(commentaryFile, origName, savedName, filePath);
+                return commentaryFile;
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
         }
     }
 

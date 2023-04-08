@@ -21,7 +21,7 @@ public class CommentaryFile {
     private Long id;
 
     @Setter
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "commentary_id")
     private Commentary commentary;
 
@@ -53,5 +53,12 @@ public class CommentaryFile {
 
     public void download(){
         this.downloadCount += 1;
+    }
+
+    public CommentaryFile updateCommentaryFile(CommentaryFile commentaryFile, String originalFileName, String storedFileName, String filePath){
+        commentaryFile.originalFileName = originalFileName;
+        commentaryFile.storedFileName = storedFileName;
+        commentaryFile.filePath = filePath;
+        return commentaryFile;
     }
 }
