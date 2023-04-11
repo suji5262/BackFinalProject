@@ -59,8 +59,6 @@ public class MemberServiceImpl implements MemberService {
             session.setAttribute("email",member.getEmail());
             session.setAttribute("id",member.getId());
 
-            System.out.println("id" + session.getAttribute("id"));
-            System.out.println("email" + session.getAttribute("email"));
         }
 
     }

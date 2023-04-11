@@ -49,26 +49,9 @@ public class StrategyServiceImpl implements StrategyService {
     public String strategyBoard(MultipartFile file,MultipartFile video, StrategyRequest strategyRequest, StrategyVideoRequest videoRequest,String email) {
 
         try{
-            /*
-            [ mentor's sudo code ]
 
-            // strategy 1:N video
-            Strategy strategy = new Strategy();
-            // strategy.setFields();
-
-            StrategyVideo strategyVideo = new StrategyVideo();
-            // strategyVideo.setFields();
-
-            // addStrategyVideo();
-            strategyVideo.setStrategy(strategy);
-            strategy.setStrategyVideo(strategyVideo);
-
-            strategyRepository.save(strategy);
-            */
             Member member = memberRepository.findByEmail(email).orElse(null);
-            System.out.println("member=" + member.getRole());
-            System.out.println("member=" + member.getId());
-            System.out.println("member=" + member.getEmail());
+
 
             if(member.getRole() == 1){
 
