@@ -14,7 +14,7 @@ jobs:
 
   build:
     env: 
-      working-directory: ./BackFinalPriject
+      working-directory: /home/runner/work/BackFinalProject/BackFinalProject/BackFinalPriject/
     runs-on: ubuntu-latest
 
     steps:
