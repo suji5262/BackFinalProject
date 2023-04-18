@@ -24,15 +24,18 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
         
+    - name: check file path
+      run : cd /home/runner/work/BackFinalProject/BackFinalPriject | ls
+        
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
       env:
-        working-directory: /BackFinalPriject
+        working-directory: /home/runner/work/BackFinalProject/BackFinalPriject
 
     - name: Build with Gradle
       run: ./gradlew clean build
       env:
-        working-directory: /BackFinalPriject
+        working-directory: /home/runner/work/BackFinalProject/BackFinalPriject
 
 #디렉토리 생성
     - name: Make Directory
