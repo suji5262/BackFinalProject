@@ -25,7 +25,7 @@ jobs:
         distribution: 'temurin'
         
     - name: check file path
-      run : cd /home/runner/work/BackFinalProject/BackFinalPriject | ls
+      run : echo pwd | echo ls
         
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
