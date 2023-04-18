@@ -25,7 +25,7 @@ jobs:
         distribution: 'temurin'
         
     - name: move directory
-      run: cd ./BackFinalPriject | pwd
+      run: cd /home/runner/work/BackFinalProject/BackFinalPriject | pwd
 
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
