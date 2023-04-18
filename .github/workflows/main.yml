@@ -27,12 +27,12 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
       env:
-        working-directory: ./BackFinalPriject
+        working-directory: /BackFinalPriject
 
     - name: Build with Gradle
       run: ./gradlew clean build
       env:
-        working-directory: ./BackFinalPriject
+        working-directory: /BackFinalPriject
 
 #디렉토리 생성
     - name: Make Directory
