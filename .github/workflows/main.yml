@@ -13,8 +13,6 @@ env:
 jobs:
 
   build:
-    env: 
-      working-directory: /home/runner/work/BackFinalProject/BackFinalProject/BackFinalPriject/
     runs-on: ubuntu-latest
 
     steps:
@@ -25,6 +23,9 @@ jobs:
       with:
         java-version: '11'
         distribution: 'temurin'
+        
+    - name: Move directory
+      run: cd BackFinalPriject/ | ls
         
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
