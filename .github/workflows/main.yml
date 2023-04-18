@@ -24,17 +24,15 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
         
-    - name: Move directory
-      run: cd BackFinalPriject/
-      
-    - name: Check file list
-      run: ls
-        
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
+      env:
+        working-directory: ./BackFinalPriject
 
     - name: Build with Gradle
       run: ./gradlew clean build
+      env:
+        working-directory: ./BackFinalPriject
 
 #디렉토리 생성
     - name: Make Directory
