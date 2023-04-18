@@ -11,8 +11,10 @@ env:
   S3_BUCKET_NAME: eduhash-deploy
 
 jobs:
-  build:
 
+  build:
+    env: 
+      working-directory: ./BackFinalPriject
     runs-on: ubuntu-latest
 
     steps:
@@ -25,7 +27,7 @@ jobs:
         distribution: 'temurin'
         
     - name: Grant execute permission for gradlew
-      run: cd /home/runner/work/BackFinalProject/BackFinalProject/BackFinalPriject/ | chmod +x gradlew
+      run: chmod +x gradlew
 
     - name: Build with Gradle
       run: ./gradlew clean build
