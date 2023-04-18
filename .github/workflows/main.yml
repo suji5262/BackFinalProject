@@ -14,6 +14,8 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
+    env:
+      working-directory: ./BackFinalPriject
 
     steps:
     - uses: actions/checkout@v2
@@ -24,18 +26,15 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
         
-    - name: check file path
-      run : echo pwd | echo ls
-        
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
       env:
-        working-directory: /home/runner/work/BackFinalProject/BackFinalPriject
+        working-directory: ${{env.working-directory}}
 
     - name: Build with Gradle
       run: ./gradlew clean build
       env:
-        working-directory: /home/runner/work/BackFinalProject/BackFinalPriject
+        working-directory: ${{env.working-directory}}
 
 #디렉토리 생성
     - name: Make Directory
