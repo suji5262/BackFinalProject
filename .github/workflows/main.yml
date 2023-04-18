@@ -8,7 +8,7 @@ on:
     branches: [ develop ]
 
 env:
-  S3_BUCKET_NAME: S3서비스의버킷명따옴표없이
+  S3_BUCKET_NAME: eduhash-deploy
 
 jobs:
   build:
